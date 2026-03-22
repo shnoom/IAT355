@@ -44,7 +44,7 @@ vegaEmbed('#vis-production', {
 });
 
 // Chart 2: Global water ussage
-
+// this doens't really amke sense, but wanted to compare how much water is used annually vs something to get relative idea of how much water that is
 vegaEmbed('#vis-water', {
   ...config,
   "data": dataSource,
