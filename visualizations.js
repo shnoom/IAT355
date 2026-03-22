@@ -35,11 +35,16 @@ vegaEmbed('#vis-production', {
       "field": "Monthly_Production_Tonnes", 
       "type": "quantitative", 
       "title": "Total Production (Tonnes)"
-    }
+    },
+    "tooltip": [
+      {"field": "Brand", "type": "nominal"},
+      {"aggregate": "sum", "field": "Monthly_Production_Tonnes", "type": "quantitative", "title": "Total Tonnes", "format": ",.0f"}
+    ]
   }
 });
 
 // Chart 2: Global water ussage
+
 vegaEmbed('#vis-water', {
   ...config,
   "data": dataSource,
@@ -54,7 +59,12 @@ vegaEmbed('#vis-water', {
           "field": "Water_Usage_Million_Litres", 
           "type": "quantitative", 
           "title": "Total Million Litres"
-        }
+        },
+        // Added Tooltip
+        "tooltip": [
+          {"field": "Brand", "type": "nominal"},
+          {"aggregate": "sum", "field": "Water_Usage_Million_Litres", "type": "quantitative", "title": "Total Litres (Millions)", "format": ",.0f"}
+        ]
       }
     },
     {
