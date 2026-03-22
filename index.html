@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>The Gap: A Fast Fashion Story</title>
+  
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:wght@400;700&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <div class="textBox">
+    <h1>The True Cost of Fast Fashions</h1>
+    <p class="subtitle">Dataset from Kaggle</p>
+    <p>Analyzing the impact these 5 fast fashion brands, <span class="highlight">Shein, Forever21, Zara, H&M and Uniqlo</span>, have on the economic, social and enviromental state of the world.</p>
+  </div>
+
+  <section>
+    <div class="textBox">
+      <h2>1. The Volume of "New"</h2>
+      <p class="subheader">Average monthly textile production of each brand in tonnes </p>
+      <p>Every month, these five brands alone churn out thousands of tonnes of textile. <span class="highlight">Shein</span> leads, producing over 500 tonnes of clothing every 30 days.</p>
+    </div>
+    <div class="chart-wrapper">
+      <div id="vis-production"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="textBox">
+      <h2>2. Water consumption</h2>
+      <p class="subheader">Annual water usage in million liters. </p>
+      <p>To produce this much, the water requirement is staggering. We compared the annual water usage of a retailer to a single Canadian household. On this scale, the household usage of 81,395 litres is practically <span class="highlight">invisible</span>.</p>
+    </div>
+    <div class="chart-wrapper">
+      <div id="vis-water"></div>
+    </div>
+    <div class="textBox">
+        <p class="annotation">The red line at the bottom represents 1 year of life for a family of four. The bars represent 1 year of production.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="textBox">
+      <h2>3. The Affordability Crisis</h2>
+      <p> We calculated the daily wage of a worker versus the price of a single item they produce. In almost every case, a worker cannot afford a single piece of clothing with their entire day's pay.</p>
+      <p>For a <span class="highlight">Zara</span> worker to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
+       <p>This is the cost without even taking in to count the number of hours a worker works in a day.</p>
+    </div>
+    <div class="chart-wrapper">
+      <div id="vis-wage"></div>
+    </div>
+  </section>
+  <script src="visualizations.js"></script>
+</body>
+</html>

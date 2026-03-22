@@ -1,0 +1,80 @@
+:root {
+  --bg-color: #fdfaf6;
+  --text-color: #222;
+  --accent-red: #e63946;
+  --accent-blue: #457b9d;
+  --muted: #888;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Work Sans', sans-serif;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+}
+
+.textBox {
+  max-width: 650px;
+  margin: 100px auto;
+  padding: 0 4rem;
+}
+
+h1 {
+  font-family: 'Ibarra Real Nova', serif;
+  font-size: 4rem;
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.subheader{
+     font-family: 'Ibarra Real Nova', serif;
+  font-size: 1.5rem;
+  text-align: left;
+  margin-top: 0;
+}
+.subtitle {
+  text-align: center;
+  font-style: italic;
+  color: var(--muted);
+  margin-bottom: 4rem;
+}
+
+h2 {
+  font-family: 'Ibarra Real Nova', serif;
+  font-size: 2rem;
+  margin-top: 4rem;
+  margin-bottom: 0;
+}
+
+.chart-wrapper {
+  width: 100%;
+  max-width: 900px;
+  margin: 40px auto;
+  display: flex;
+  justify-content: center;
+  background: white;
+  padding: 40px 0;
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+}
+
+.annotation {
+  font-size: 0.9rem;
+  color: var(--muted);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+.highlight {
+  color: var(--accent-red);
+  font-weight: 600;
+}
+
+section {
+  min-height: 60vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
