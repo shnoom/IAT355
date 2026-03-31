@@ -17,7 +17,112 @@ const dataSource = {
   "format": {"type": "csv"}
 };
 
-// Chart 1: Global production
+// Chart 1: Map Factories
+d3.csv("true_cost_fast_fashion.csv").then(data => {
+  const countryMap = {
+    "USA": "United States of America",
+    "UK": "United Kingdom"
+  };
+  const focusCountries = [
+    "India",
+    "Bangladesh",
+    "Vietnam",
+    "Indonesia",
+    "China",
+    "Turkey"
+  ];
+  const counts = {};
+
+  data.forEach(d => {
+    const year = +d.Year;
+    const country = countryMap[d.Country] || d.Country;
+
+    if (year >= 2022 && year <= 2024 && focusCountries.includes(country)) {
+      counts[country] = (counts[country] || 0) + 1;
+    }
+  });
+
+  const factoryCounts = Object.entries(counts).map(([Country, factoryCount]) => ({
+    Country,
+    factoryCount
+  }));
+  vegaEmbed("#vis-map", {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 800,
+    "height": 420,
+    "title": {
+      "text": "Selected Fast Fashion Manufacturing Countries (2022-2024)",
+      "anchor": "start",
+      "fontSize": 20,
+      "font": "Ibarra Real Nova",
+      "offset": 15
+    },
+    "config": config,
+    "layer": [
+      {
+        "data": {
+          "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          "format": {
+            "type": "topojson",
+            "feature": "countries"
+          }
+        },
+        "projection": {"type": "equalEarth"},
+        "mark": {
+          "type": "geoshape",
+          "fill": "#efefef",
+          "stroke": "white",
+          "strokeWidth": 0.6
+        }
+      },
+      {
+        "data": {
+          "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          "format": {
+            "type": "topojson",
+            "feature": "countries"
+          }
+        },
+        "projection": {"type": "equalEarth"},
+        "transform": [
+          {
+            "lookup": "properties.name",
+            "from": {
+              "data": { "values": factoryCounts },
+              "key": "Country",
+              "fields": ["factoryCount"]
+            }
+          },
+          {
+            "filter": "datum.factoryCount != null"
+          }
+        ],
+        "mark": {
+          "type": "geoshape",
+          "stroke": "white",
+          "strokeWidth": 0.6
+        },
+        "encoding": {
+          "color": {
+            "field": "factoryCount",
+            "type": "quantitative",
+            "title": "Record Count",
+            "scale": {
+              "scheme": "oranges"
+            }
+          },
+          "tooltip": [
+            {"field": "properties.name", "type": "nominal", "title": "Country"},
+            {"field": "factoryCount", "type": "quantitative", "title": "Records"}
+          ]
+        }
+      }
+    ]
+  }, { actions: false }); 
+});
+
+
+// Chart 2: Global production
 vegaEmbed('#vis-production', {
   ...config,
   "data": dataSource,
@@ -43,7 +148,7 @@ vegaEmbed('#vis-production', {
   }
 });
 
-// Chart 2: Global water ussage
+// Chart 3: Global water ussage
 // this doens't really amke sense, but wanted to compare how much water is used annually vs something to get relative idea of how much water that is
 vegaEmbed('#vis-water', {
   ...config,
@@ -75,7 +180,7 @@ vegaEmbed('#vis-water', {
   ]
 });
 
-// Chart 3: Cleveland dot plot for wage vs, price
+// Chart 4: Cleveland dot plot for wage vs, price
 //ERROR i relaize in this visualization it like takes sum od all the locations for each retailer, so it skews it as factories in like develoopping countries have work weeks of like 40 vs more devellopping countries closer to 60+, were going to have to change and or do a second graph comparing GEOGRPAHICAL location ratehr than from rband but imm leave this for now for this submission
 
 vegaEmbed('#vis-wage', {
