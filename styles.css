@@ -38,11 +38,12 @@ body {
   color: rgb(0, 0, 0);
   font-size: 14px;
   transition: 0.3s;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 .nav-links li a:hover {
-  color: #c94f8a;
+  color: var(--accent-red);
 }
-
 /* Burger Menu (hidden on desktop) */
 .burger {
   display: none;
@@ -52,6 +53,31 @@ body {
   padding: 10px 15px;
   border-radius: 50px;
 }
+/* Hero */
+.hero {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hero-title {
+  font-family: "Work Sans", sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.line {
+  font-size: 4rem;
+  margin: 0.3rem 0;
+}
+.pink-highlight {
+  display: inline-block;
+  background: var(--accent-pink);
+  color: var(--accent-red);
+  padding: 0.3rem 1rem;
+  transform: rotate(-5deg);
+}
+
 
 
 .textBox {
@@ -59,7 +85,6 @@ body {
   margin: 4rem auto;
   padding: 0 4rem;
 }
-
 h1 {
   font-family: 'Ibarra Real Nova', serif;
   font-size: 4rem;

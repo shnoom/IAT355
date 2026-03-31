@@ -48,13 +48,13 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
   }));
   vegaEmbed("#vis-map", {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 800,
+    "width": 720,
     "height": 420,
+    "padding": { "left": 20, "right": 20, "top": 10, "bottom": 0 },
     "title": {
       "text": "Selected Fast Fashion Manufacturing Countries (2022-2024)",
       "anchor": "start",
-      "fontSize": 20,
-      "font": "Ibarra Real Nova",
+      "fontSize": 18,
       "offset": 15
     },
     "config": config,
