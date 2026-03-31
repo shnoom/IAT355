@@ -18,26 +18,26 @@ const dataSource = {
 };
 
 // Chart 1: Map Factories
+
+// I added the countries manually from the dataset (US and Europe excluded)
 d3.csv("true_cost_fast_fashion.csv").then(data => {
-  const countryMap = {
-    "USA": "United States of America",
-    "UK": "United Kingdom"
-  };
   const focusCountries = [
     "India",
     "Bangladesh",
     "Vietnam",
     "Indonesia",
     "China",
-    "Turkey"
+    "Turkey",
+    "Brazil"
   ];
   const counts = {};
 
   data.forEach(d => {
     const year = +d.Year;
-    const country = countryMap[d.Country] || d.Country;
+    const country = d.Country;
 
-    if (year >= 2022 && year <= 2024 && focusCountries.includes(country)) {
+    // you can control years here
+    if (/*year >= 2022 && year <= 2024 && */focusCountries.includes(country)) {
       counts[country] = (counts[country] || 0) + 1;
     }
   });
@@ -46,81 +46,78 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
     Country,
     factoryCount
   }));
+
   vegaEmbed("#vis-map", {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-    "width": 720,
-    "height": 420,
-    "padding": { "left": 20, "right": 20, "top": 10, "bottom": 0 },
-    "title": {
-      "text": "Selected Fast Fashion Manufacturing Countries (2022-2024)",
-      "anchor": "start",
-      "fontSize": 18,
-      "offset": 15
+    width: 720,
+    height: 420,
+    title: {
+      text: "Selected Fast Fashion Manufacturing Countries",
+      anchor: "start",
+      fontSize: 18,
+      offset: 15
     },
-    "config": config,
-    "layer": [
+    config: config,
+    layer: [
       {
-        "data": {
-          "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-          "format": {
-            "type": "topojson",
-            "feature": "countries"
+        data: {
+          url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          format: {
+            type: "topojson",
+            feature: "countries"
           }
         },
-        "projection": {"type": "equalEarth"},
-        "mark": {
-          "type": "geoshape",
-          "fill": "#efefef",
-          "stroke": "white",
-          "strokeWidth": 0.6
+        projection: { type: "equalEarth" },
+        mark: {
+          type: "geoshape",
+          fill: "#efefef",
+          stroke: "white",
+          strokeWidth: 0.6
         }
       },
       {
-        "data": {
-          "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-          "format": {
-            "type": "topojson",
-            "feature": "countries"
+        data: {
+          url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+          format: {
+            type: "topojson",
+            feature: "countries"
           }
         },
-        "projection": {"type": "equalEarth"},
-        "transform": [
+        projection: { type: "equalEarth" },
+        transform: [
           {
-            "lookup": "properties.name",
-            "from": {
-              "data": { "values": factoryCounts },
-              "key": "Country",
-              "fields": ["factoryCount"]
+            lookup: "properties.name",
+            from: {
+              data: { values: factoryCounts },
+              key: "Country",
+              fields: ["factoryCount"]
             }
           },
           {
-            "filter": "datum.factoryCount != null"
+            filter: "datum.factoryCount != null"
           }
         ],
-        "mark": {
-          "type": "geoshape",
-          "stroke": "white",
-          "strokeWidth": 0.6
+        mark: {
+          type: "geoshape",
+          stroke: "white",
+          strokeWidth: 0.6
         },
-        "encoding": {
-          "color": {
-            "field": "factoryCount",
-            "type": "quantitative",
-            "title": "Record Count",
-            "scale": {
-              "scheme": "oranges"
-            }
+        encoding: {
+          color: {
+            field: "factoryCount",
+            type: "quantitative",
+            title: "Record Count",
+            scale: { scheme: "oranges" }
           },
-          "tooltip": [
-            {"field": "properties.name", "type": "nominal", "title": "Country"},
-            {"field": "factoryCount", "type": "quantitative", "title": "Records"}
+          tooltip: [
+            { field: "properties.name", type: "nominal", title: "Country" },
+            { field: "factoryCount", type: "quantitative", title: "Records" }
           ]
         }
       }
     ]
-  }, { actions: false }); 
+  }, { actions: false });
 });
-
 
 // Chart 2: Global production
 vegaEmbed('#vis-production', {
