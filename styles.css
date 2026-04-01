@@ -1,11 +1,51 @@
 :root {
   --bg-color: #fdfaf6;
   --text-color: #222;
-  --accent-red: #e63946;
+  --accent-darkPink: #FF71C2;
   --accent-blue: #457b9d;
   --accent-pink: #FAA8D6;
   --muted: #888;
 }
+
+/* fonts */
+/* Extra bold */
+@font-face {
+  font-family: Poppins; 
+   src: url('fonts/Poppins-ExtraBold.ttf') format('truetype');
+   font-weight: 800;
+  font-style: normal;
+}
+
+/* Semi bold */
+@font-face {
+  font-family: Poppins; 
+   src: url('fonts/Poppins-SemiBold.ttf') format('truetype');
+   font-weight: 600;
+  font-style: normal;
+}
+/* Medium */
+@font-face {
+  font-family: Poppins; 
+   src: url('fonts/Poppins-Medium.ttf') format('truetype');
+   font-weight: 500;
+  font-style: normal;
+}
+
+/* Regular */
+@font-face {
+  font-family: Poppins; 
+   src: url('fonts/Poppins-Regular.ttf') format('truetype');
+   font-weight: 400;
+  font-style: normal;
+}
+/* SemiBold Italc */
+@font-face {
+  font-family: Poppins; 
+   src: url('fonts/Poppins-SemiBoldItalic.ttf') format('truetype');
+   font-weight: 600;
+  font-style: italic;
+}
+
 
 body {
   background-color: var(--bg-color);
@@ -42,7 +82,7 @@ body {
   font-weight: 500;
 }
 .nav-links li a:hover {
-  color: var(--accent-red);
+  color: var(--accent-darkPink);
 }
 /* Burger Menu (hidden on desktop) */
 .burger {
@@ -60,10 +100,12 @@ body {
   align-items: center;
   justify-content: center;
   text-align: center;
+  margin-bottom: 4rem;
 }
 .hero-title {
-  font-family: "Work Sans", sans-serif;
-  font-weight: 700;
+  font-family: "Poppins", sans-serif;
+  font-weight: 800;
+  font-style: normal;
   text-transform: uppercase;
 }
 .line {
@@ -73,7 +115,7 @@ body {
 .pink-highlight {
   display: inline-block;
   background: var(--accent-pink);
-  color: var(--accent-red);
+  color: black;
   padding: 0.3rem 1rem;
   transform: rotate(-5deg);
 }
@@ -86,11 +128,14 @@ body {
   padding: 0 4rem;
 }
 h1 {
-  font-family: 'Ibarra Real Nova', serif;
-  font-size: 4rem;
+  font-family: "Poppins";
+  font-style: normal;
+  font-weight: 800;
+  font-size: 3rem;
   line-height: 1;
   margin-bottom: 0.5rem;
   text-align: center;
+  text-transform: uppercase;
 }
 .subheader{
      font-family: 'Ibarra Real Nova', serif;
@@ -132,7 +177,7 @@ h2 {
 }
 
 .highlight {
-  color: var(--accent-red);
+  color: var(--accent-darkPink);
   font-weight: 600;
 }
 
@@ -143,6 +188,36 @@ section {
   justify-content: center;
 }
 
+.introBox h1{
+  font-family: "Poppins";
+  font-weight: 600;
+  font-style: italic;
+  font-size: 2rem;
+  max-width: 650px;
+  margin: 3rem auto;
+  padding: 0 4rem;
+  line-height: 115%;
+}
+.sectionSplitter h1{
+  font-family: "Poppins";
+  font-weight: 800;
+  font-style: normal;
+  font-size: 3rem;
+  margin: 0;
+}
+.sectionSplitter h2{
+  font-family: "Poppins";
+  font-weight: 600;
+  font-style: normal;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 0;
+  margin-bottom: 1rem;
+}
+
+section{
+  margin: 8rem;
+}
 /* Queries */
 
 /* Mobile Nav - burger*/

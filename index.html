@@ -7,6 +7,8 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <link href="https://fonts.googleapis.com/css2?family=Ibarra+Real+Nova:wght@400;700&family=Work+Sans:wght@300;400;600&display=swap" rel="stylesheet">
   <!-- CSS -->
   <link rel="stylesheet" href="styles.css">
@@ -41,9 +43,16 @@
 
   <div class="textBox">
     <h1>The Fast Fashion Impact</h1>
-    <p class="subtitle">Dataset from Kaggle</p>
-    <p>Analyzing the impact these 5 fast fashion brands, <span class="highlight">Shein, Forever21, Zara, H&M and Uniqlo</span>, have on the economic, social and enviromental state of the world.</p>
+    <p>In 2023, the  fast fashion industry was estimated to be worth $122.98 billion and is expected to reach $197.5 billion by 2028. AT its core fast fashion is the production of low-quality clothes that mimic popular-styles and trends sold at rock-bottom prices. This makes it easy for consumers to purchase stylish items, which promotes frequent shopping and quick turnovers in trends and fashion collections. The main goal of fast fashion is to essentially get people to spend more money on clothes they use for shorter times</p>
+    <p>Today, we will be examining the social, environmental and ethical impact of the 5 most dominant fast fashion brands of today, <span class="highlight">Shein, Forever21, Zara, H&M and Uniqlo.</span></p>
   </div>
+
+  <section>
+    <div class ="introBox">
+      <h1>Let’s zoom out and see where these brands factories are located to see if we can identify any patterns.</h1>
+    </div>
+  </section>
+
   <section>
   <div class="textBox">
     <h2>1. Far From the Storefront</h2>
@@ -57,9 +66,32 @@
   </div>
 </section>
 
+<section>
+  <div class ="sectionSplitter">
+    <h2>THE HUMAN COST</h2>
+    <h1>THE HANDS BEHIND THE CLOTHES</h1>
+  </div>
+
+  <!-- Visualization 1 -->
+     <div class="textBox">
+      <h2>3. The Affordability Crisis</h2>
+      <p> We calculated the daily wage of a worker versus the price of a single item they produce. In almost every case, a worker cannot afford a single piece of clothing with their entire day's pay.</p>
+      <p>For a <span class="highlight">Zara</span> worker to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
+       <p>This is the cost without even taking in to account the number of hours a worker works in a day.</p>
+    </div>
+    <div class="chart-wrapper">
+      <div id="vis-wage"></div>
+    </div>
+</section>
 
 
   <section>
+    <div class ="sectionSplitter">
+    <h2>THE ENVIRONMENTAL COST</h2>
+    <h1>HOW THE PLANET PAYS THE PRICE</h1>
+  </div>
+
+  <!-- visulaizaiton -->
     <div class="textBox">
       <h2>1. The Volume of "New"</h2>
       <p class="subheader">Average monthly textile production of each brand in tonnes </p>
@@ -68,9 +100,8 @@
     <div class="chart-wrapper">
       <div id="vis-production"></div>
     </div>
-  </section>
-
-  <section>
+ 
+    <!-- visualziaiton -->
     <div class="textBox">
       <h2>2. Water consumption</h2>
       <p class="subheader">Annual water usage in million liters. </p>
@@ -84,20 +115,17 @@
     </div>
   </section>
 
+
   <section>
-    <div class="textBox">
-      <h2>3. The Affordability Crisis</h2>
-      <p> We calculated the daily wage of a worker versus the price of a single item they produce. In almost every case, a worker cannot afford a single piece of clothing with their entire day's pay.</p>
-      <p>For a <span class="highlight">Zara</span> worker to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
-       <p>This is the cost without even taking in to account the number of hours a worker works in a day.</p>
-    </div>
-    <div class="chart-wrapper">
-      <div id="vis-wage"></div>
-    </div>
+    <div class ="sectionSplitter">
+    <h2>THE SOCIAL IMPACT</h2>
+    <h1>SEW,DO THESE ISSUES EVEN MATTER TO CONSUMERS?</h1>
+  </div>
   </section>
 
   <!-- Scripts -->
   <script src="visualizations.js"></script>
+  <script src="main.js"></script>
   <script>
   function toggleMenu() {
     document.getElementById("navLinks").classList.toggle("active");
