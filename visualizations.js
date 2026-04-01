@@ -151,43 +151,24 @@ vegaEmbed('#vis-water', {
   "data": dataSource,
   "width": 720, 
   "height": 420,
-  "params": [
-    {
-      "name": "Year_Slider",
-      "value": 2024,
-      "bind": {
-        "input": "range", 
-        "min": 2016, 
-        "max": 2024, 
-        "step": 1, 
-        "name": "Select Year: "
-      }
-    }
-  ],
   "transform": [
-    { "filter": "datum.Year == Year_Slider" },
+    { "filter": "datum.Year == 2024" },
   ],
   "layer": [
     {
       "mark": {"type": "bar", "color": "#eee", "stroke":null,"clip":false},
       "encoding": {
         "x": {
-          "field": "Brand", 
-          "type": "nominal", 
-          "sort": "-y", 
-          "scale": {
-            "domain": ["Shein", "Forever 21", "Uniqlo", "Zara", "H&M"]
-          },
+          "field": "Brand",
+          "type": "nominal",
+          "sort": "-y",
           "axis": {"labelAngle": 0}
         },
         "y": {
-          "aggregate": "sum", 
-          "field": "Water_Usage_Million_Litres", 
-          "type": "quantitative", 
-          "title": "Total Million Litres",
-          "scale": {
-            "domain": [0, 18000]
-          }
+          "aggregate": "sum",
+          "field": "Water_Usage_Million_Litres",
+          "type": "quantitative",
+          "title": "Total Million Litres"
         },
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
@@ -203,9 +184,7 @@ vegaEmbed('#vis-water', {
       }
     }
   ]
-}, {
- "bind": "#slider-water-container"
-});
+}, { "actions": false });
 
 // Chart 4: Cleveland dot plot for wage vs, price
 //ERROR i relaize in this visualization it like takes sum od all the locations for each retailer, so it skews it as factories in like develoopping countries have work weeks of like 40 vs more devellopping countries closer to 60+, were going to have to change and or do a second graph comparing GEOGRPAHICAL location ratehr than from rband but imm leave this for now for this submission
@@ -429,23 +408,9 @@ vegaEmbed("#vis-HeatMap", {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Total Carbon Emissions Each Year by Brand and Country",
 
-  "params": [
-    {
-      "name": "Year_Slider",
-      "value": 2024,
-      "bind": {
-        "input": "range",
-        "min": 2016,
-        "max": 2024,
-        "step": 1,
-        "name": "Select Year: "
-      }
-    }
-  ],
-
   "transform": [
     {
-      "filter": "datum.Year == Year_Slider"
+      "filter": "datum.Year == 2024"
     },
     {
       "filter": "datum.Country !== 'USA' && datum.Country !== 'UK' && datum.Country !== 'Germany'"
@@ -472,8 +437,7 @@ vegaEmbed("#vis-HeatMap", {
       "type": "quantitative",
       "aggregate": "sum",
       "scale": {
-        "scheme": "oranges",
-        "domain": [0, 150000] 
+        "scheme": "oranges"
       },
       "title": "Total Emissions (CO2)"
     },
@@ -494,6 +458,5 @@ vegaEmbed("#vis-HeatMap", {
     "axis": {"grid": false}
   }
 }, {
-  "bind": "#slider-heatmap-container",
   "actions": false
 });

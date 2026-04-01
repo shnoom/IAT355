@@ -231,41 +231,6 @@ section{
   width: 100%;
 }
 
-#slider-water-container {
-  width: 100%;
-}
-
-#slider-water-container .vega-bind {
-  display: flex;
-  flex-direction: column; 
-  align-items: center;
-  width: 100%;
-  font-family: "Poppins";
-  font-size: 1rem;
-}
-
-#slider-water-container input[type="range"] {
-  width: 100%;
-  cursor: pointer;
-}
-
-#slider-heatmap-container {
-  width: 100%;
-}
-
-#slider-heatmap-container .vega-bind {
-  display: flex;
-  flex-direction: column; 
-  align-items: center;
-  width: 100%;
-  font-family: "Poppins";
-  font-size: 1rem;
-}
-
-#slider-heatmap-container input[type="range"] {
-  width: 100%;
-  cursor: pointer;
-}
 
 /* Queries */
 
