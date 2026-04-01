@@ -52,7 +52,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
     width: "container",
     height: 420,
     title: {
-      text: "Selected Fast Fashion Manufacturing Countries",
+      text: "Top Fast Fashion Manufacturing Countries",
       anchor: "start",
       fontSize: 18,
       offset: 15
@@ -106,12 +106,12 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
           color: {
             field: "factoryCount",
             type: "quantitative",
-            title: "Record Count",
+            title: "Factory Count",
             scale: { scheme: "oranges" }
           },
           tooltip: [
             { field: "properties.name", type: "nominal", title: "Country" },
-            { field: "factoryCount", type: "quantitative", title: "Records" }
+            { field: "factoryCount", type: "quantitative", title: "Factories" }
           ]
         }
       }

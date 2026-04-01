@@ -46,6 +46,46 @@
   font-style: italic;
 }
 
+/* Testing scroll effects */
+.scroll-step {
+  min-height: 160vh;
+  position: relative;
+}
+.scroll-step .textBox,
+.scroll-step .introBox {
+  position: sticky;
+  top: 18vh;
+}
+.story-block {
+  position: sticky;
+  top: 20vh;
+}
+.scroll-step .introBox {
+  position: sticky;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+.story-block .textBox,
+.story-block .chart-wrapper {
+  position: static;
+  top: auto;
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: all 0.8s ease;
+}
+
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+.introBox h1 {
+  transform: scale(0.8);
+  opacity: 0.3;
+  transition: transform 0.2s linear;
+}
 
 body {
   background-color: var(--bg-color);
@@ -95,7 +135,7 @@ body {
 }
 /* Hero */
 .hero {
-  min-height: 80vh;
+  min-height: 90vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -119,7 +159,6 @@ body {
   padding: 0.3rem 1rem;
   transform: rotate(-5deg);
 }
-
 
 
 .textBox {
@@ -175,6 +214,8 @@ h2 {
   align-items: center;
   overflow: visible;
   box-sizing: border-box;
+  border: 1px solid #EDEDED;
+  border-radius: 8px;
 }
 
 .chart-wrapper > div {
