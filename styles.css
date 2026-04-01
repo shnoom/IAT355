@@ -170,10 +170,15 @@ h2 {
   display: flex;
   justify-content: center;
   background: white;
-  padding: 1.5rem 0;
+  padding: 1.5rem 1rem;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  overflow: visible;
+  box-sizing: border-box;
+}
+
+.chart-wrapper > div {
+  width: 100%;
 }
 
 .annotation {
@@ -223,7 +228,22 @@ section {
 }
 
 section{
-  margin: 8rem;
+  margin: 8rem 2rem;
+}
+
+@media (max-width: 960px) {
+  section {
+    margin: 4rem 1rem;
+  }
+  .textBox {
+    padding: 0 1.5rem;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  .line {
+    font-size: 2.5rem;
+  }
 }
 
  img{

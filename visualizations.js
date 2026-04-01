@@ -49,7 +49,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
 
   vegaEmbed("#vis-map", {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-    width: 720,
+    width: "container",
     height: 420,
     title: {
       text: "Selected Fast Fashion Manufacturing Countries",
@@ -123,7 +123,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
 vegaEmbed('#vis-production', {
   ...config,
   "data": dataSource,
-  "width": 600, "height": 300,
+  "width": "container", "height": 300,
   "mark": {"type": "bar", "color": "#222", "size": 30},
   "encoding": {
     "x": {
@@ -149,7 +149,7 @@ vegaEmbed('#vis-production', {
 vegaEmbed('#vis-water', {
   ...config,
   "data": dataSource,
-  "width": 720, 
+  "width": "container",
   "height": 420,
   "transform": [
     { "filter": "datum.Year == 2024" },
@@ -196,7 +196,7 @@ vegaEmbed('#vis-wage', {
     {"calculate": "datum.Avg_Worker_Wage_USD / 26", "as": "DailyWage"},
     {"calculate": "datum.Working_Hours_Per_Week / 5", "as": "DailyHours"}
   ],
-  "width": 600, "height": 300,
+  "width": "container", "height": 300,
   "layer": [
     // The connector line
     {
@@ -251,7 +251,7 @@ vegaEmbed('#vis-bars', {
       fontSize: 18,
       offset: 15
     },
-  "width": 600, 
+  "width": "container",
   "height": 300,
   "transform": [
     // divide by 23 (average working days) since it onyl gives a monthly wage
@@ -307,7 +307,7 @@ vegaEmbed('#vis-bars', {
 
 vegaEmbed("#vis-Wagemap", {
   $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-  width: 720,
+  width: "container",
   height: 420,
   title: {
     text: "Daily Wage & Labour Hours by Brand & Country",
@@ -403,7 +403,7 @@ vegaEmbed("#vis-Wagemap", {
 vegaEmbed("#vis-HeatMap", {
   ...config,
   "data": dataSource,
-  "width": 720,
+  "width": "container",
   "height": 420,
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "title": "Total Carbon Emissions Each Year by Brand and Country",
