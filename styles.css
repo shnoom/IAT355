@@ -123,8 +123,9 @@ body {
 
 
 .textBox {
-  max-width: 650px;
-  margin: 4rem auto;
+  max-width: 700px;
+  margin: 0rem auto;
+  margin-bottom: 0;
   padding: 0 4rem;
 }
 h1 {
@@ -151,11 +152,16 @@ h1 {
 }
 
 h2 {
-  font-family: 'Ibarra Real Nova', serif;
-  font-size: 2rem;
-  margin-top: 4rem;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-style: normal;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+
   margin-bottom: 0;
 }
+
+
 
 .chart-wrapper {
   width: 100%;
@@ -164,9 +170,10 @@ h2 {
   display: flex;
   justify-content: center;
   background: white;
-  padding: 40px 0;
-  border-top: 1px solid #eee;
-  border-bottom: 1px solid #eee;
+  padding: 1.5rem 0;
+  flex-direction: column;
+  align-items: center;
+  overflow: visible !important;
 }
 
 .annotation {
@@ -218,6 +225,48 @@ section {
 section{
   margin: 8rem;
 }
+
+ img{
+  align-items: center;
+  width: 100%;
+}
+
+#slider-water-container {
+  width: 100%;
+}
+
+#slider-water-container .vega-bind {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  width: 100%;
+  font-family: "Poppins";
+  font-size: 1rem;
+}
+
+#slider-water-container input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
+#slider-heatmap-container {
+  width: 100%;
+}
+
+#slider-heatmap-container .vega-bind {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  width: 100%;
+  font-family: "Poppins";
+  font-size: 1rem;
+}
+
+#slider-heatmap-container input[type="range"] {
+  width: 100%;
+  cursor: pointer;
+}
+
 /* Queries */
 
 /* Mobile Nav - burger*/

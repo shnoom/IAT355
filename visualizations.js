@@ -146,35 +146,65 @@ vegaEmbed('#vis-production', {
 });
 
 // Chart 3: Global water ussage
-// this doens't really amke sense, but wanted to compare how much water is used annually vs something to get relative idea of how much water that is
 vegaEmbed('#vis-water', {
   ...config,
   "data": dataSource,
-  "width": 600, "height": 300,
+  "width": 720, 
+  "height": 420,
+  "params": [
+    {
+      "name": "Year_Slider",
+      "value": 2024,
+      "bind": {
+        "input": "range", 
+        "min": 2016, 
+        "max": 2024, 
+        "step": 1, 
+        "name": "Select Year: "
+      }
+    }
+  ],
+  "transform": [
+    { "filter": "datum.Year == Year_Slider" },
+  ],
   "layer": [
     {
-      "mark": {"type": "bar", "color": "#eee"},
+      "mark": {"type": "bar", "color": "#eee", "stroke":null,"clip":false},
       "encoding": {
-        "x": {"field": "Brand", "type": "nominal", "sort": "-y", "axis": {"labelAngle": 0}},
+        "x": {
+          "field": "Brand", 
+          "type": "nominal", 
+          "sort": "-y", 
+          "scale": {
+            "domain": ["Shein", "Forever 21", "Uniqlo", "Zara", "H&M"]
+          },
+          "axis": {"labelAngle": 0}
+        },
         "y": {
           "aggregate": "sum", 
           "field": "Water_Usage_Million_Litres", 
           "type": "quantitative", 
-          "title": "Total Million Litres"
+          "title": "Total Million Litres",
+          "scale": {
+            "domain": [0, 18000]
+          }
         },
-        // Added Tooltip
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
-          {"aggregate": "sum", "field": "Water_Usage_Million_Litres", "type": "quantitative", "title": "Total Litres (Millions)", "format": ",.0f"}
+          {"field": "Year", "type": "quantitative"},
+          {
+            "aggregate": "sum", 
+            "field": "Water_Usage_Million_Litres", 
+            "type": "quantitative", 
+            "title": "Total Litres (Millions)", 
+            "format": ",.0f"
+          }
         ]
       }
-    },
-    {
-      "data": {"values": [{"y": 0.081}]}, 
-      "mark": {"type": "rule", "color": "#e63946", "size": 2},
-      "encoding": {"y": {"field": "y", "type": "quantitative"}}
     }
   ]
+}, {
+ "bind": "#slider-water-container"
 });
 
 // Chart 4: Cleveland dot plot for wage vs, price
@@ -231,4 +261,239 @@ vegaEmbed('#vis-wage', {
       }
     }
   ]
+});
+
+vegaEmbed('#vis-bars', {
+  ...config,
+  "data": dataSource,
+  title: {
+      text: "Average Item Price vs Daily Wage for Workers by Brand",
+      anchor: "start",
+      fontSize: 18,
+      offset: 15
+    },
+  "width": 600, 
+  "height": 300,
+  "transform": [
+    // divide by 23 (average working days) since it onyl gives a monthly wage
+    {"calculate": "datum.Avg_Worker_Wage_USD / 23", "as": "Daily_Wage"},
+    
+  
+    {
+      "aggregate": [
+        {"op": "mean", "field": "Avg_Item_Price_USD", "as": "Avg Item Price ($)"},
+        {"op": "mean", "field": "Daily_Wage", "as": "Avg Daily Wage ($)"}
+      ],
+      "groupby": ["Brand"]
+    },
+    
+    {
+      "fold": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
+      "as": ["Metric", "Value"]
+    }
+  ],
+  "mark": "bar",
+  "encoding": {
+    "x": {
+      "field": "Brand", 
+      "type": "nominal", 
+      "axis": {"labelAngle": 0},
+      "title": "Brand"
+    },
+    "y": {
+      "field": "Value", 
+      "type": "quantitative", 
+      "title": "Value (USD)"
+    },
+    "xOffset": {
+      "field": "Metric", 
+      "type": "nominal"
+    },
+    "color": {
+      "field": "Metric", 
+      "type": "nominal",
+      "scale": {
+        "domain": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
+        "range": ["#d65f5f", "#5b9bd5"]
+      },
+      "legend": {"title": "Metric"}
+    },
+    "tooltip": [
+      {"field": "Brand", "type": "nominal"},
+      {"field": "Metric", "type": "nominal"},
+      {"field": "Value", "type": "quantitative","title": "Value", "format": "$.2f"}
+    ]
+  }
+});
+
+vegaEmbed("#vis-Wagemap", {
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  width: 720,
+  height: 420,
+  title: {
+    text: "Daily Wage & Labour Hours by Brand & Country",
+    anchor: "start",
+    fontSize: 18,
+    offset: 15
+  },
+  params: [
+    {
+      "name": "brand_select",
+      "value": "Shein",
+      "bind": {
+        "input": "select", 
+        "options": ["Shein", "Zara", "Uniqlo", "Forever 21", "H&M"],
+        "name": "Brand: "
+      }
+    }
+  ],
+  layer: [
+    {
+      // Layer 1: Background World Map
+      data: {
+        url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        format: { type: "topojson", feature: "countries" }
+      },
+      projection: { type: "equalEarth" },
+      mark: { type: "geoshape", fill: "#efefef", stroke: "white" }
+    },
+    {
+    //  data aggrevated from dataset
+      data: { url: "true_cost_fast_fashion.csv" },
+      projection: { type: "equalEarth" },
+      transform: [
+        //filter by the brand
+        { "filter": "datum.Brand == brand_select" },
+        
+        // remove usa and other global north countries
+        { 
+          "filter": "datum.Country != 'USA' && datum.Country != 'UK' && datum.Country != 'Germany'" 
+        },
+        //for correcting mismatch with certain countries
+        {
+         "calculate": "datum.Country == 'Vietnam' ? 'Viet Nam' : datum.Country",
+          "as": "map_name"
+        },
+
+        // aggregrate all the rows into 1 per country
+        {
+          "aggregate": [
+            {"op": "mean", "field": "Avg_Worker_Wage_USD", "as": "Monthly_Wage"},
+            {"op": "mean", "field": "Working_Hours_Per_Week", "as": "Weekly_Hours"}
+          ],
+          "groupby": ["map_name"]
+        },
+
+        // turn the dataset columns into daily wage, wekkly hours and get hourly wage as better method for comparison
+        { "calculate": "datum.Monthly_Wage / 23", "as": "Daily_Wage" },
+        { "calculate": "datum.Weekly_Hours / 5", "as": "Daily_Hours" },
+        { "calculate": "datum.Daily_Wage / datum.Daily_Hours", "as": "Hourly_Wage" },
+        {
+          "lookup": "map_name",
+          "from": {
+            "data": {
+              "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+              "format": { "type": "topojson", "feature": "countries" }
+            },
+            "key": "properties.name"
+          },
+          "as": "geo"
+        }
+      ],
+      "mark": { "type": "geoshape", "stroke": "white" },
+      "encoding": {
+        "shape": { "field": "geo", "type": "geojson" },
+        "color": {
+          "field": "Hourly_Wage",
+          "type": "quantitative",
+          "title": "Hourly Wage ($)",
+          "scale": { "scheme": "yellowgreenblue" }
+        },
+        "tooltip": [
+          { "field": "map_name", "type": "nominal", "title": "Country" },
+          { "field": "Hourly_Wage", "type": "quantitative", "title": "Hourly Wage", "format": "$.2f" },
+          { "field": "Daily_Wage", "type": "quantitative", "title": "Daily Wage", "format": "$.2f" },
+          { "field": "Daily_Hours", "type": "quantitative", "title": "Daily Hours", "format": ".1f" }
+        ]
+      }
+    }
+  ]
+}, { actions: false });
+
+
+vegaEmbed("#vis-HeatMap", {
+  ...config,
+  "data": dataSource,
+  "width": 720,
+  "height": 420,
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "title": "Total Carbon Emissions Each Year by Brand and Country",
+
+  "params": [
+    {
+      "name": "Year_Slider",
+      "value": 2024,
+      "bind": {
+        "input": "range",
+        "min": 2016,
+        "max": 2024,
+        "step": 1,
+        "name": "Select Year: "
+      }
+    }
+  ],
+
+  "transform": [
+    {
+      "filter": "datum.Year == Year_Slider"
+    },
+    {
+      "filter": "datum.Country !== 'USA' && datum.Country !== 'UK' && datum.Country !== 'Germany'"
+    },
+    {
+      "calculate": "datum.Country == 'Vietnam' ? 'Viet Nam' : datum.Country",
+      "as": "map_name"
+    }
+  ],
+  "mark": "rect",
+  "encoding": {
+    "x": {
+      "field": "Country",
+      "type": "nominal",
+      "title": "Production Country"
+    },
+    "y": {
+      "field": "Brand",
+      "type": "nominal",
+      "title": "Brand"
+    },
+    "color": {
+      "field": "Carbon_Emissions_tCO2e",
+      "type": "quantitative",
+      "aggregate": "sum",
+      "scale": {
+        "scheme": "oranges",
+        "domain": [0, 150000] 
+      },
+      "title": "Total Emissions (CO2)"
+    },
+    "tooltip": [
+      {"field": "Brand", "type": "nominal"},
+      {"field": "Country", "type": "nominal"},
+      {
+        "field": "Carbon_Emissions_tCO2e", 
+        "type": "quantitative", 
+        "aggregate": "sum", 
+        "title": "Total Emissions",
+        "format": ",.0f"
+      }
+    ]
+  },
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"grid": false}
+  }
+}, {
+  "bind": "#slider-heatmap-container",
+  "actions": false
 });
