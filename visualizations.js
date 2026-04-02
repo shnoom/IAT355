@@ -514,13 +514,13 @@ vegaEmbed('#vis-social-scatter', {
         "x": {
           "field": "avg_risk",
           "type": "quantitative",
-          "title": "Average Labour Risk Score \u2192",
+          "title": "Average Labour Risk Score",
           "scale": {"zero": false}
         },
         "y": {
           "field": "avg_spend",
           "type": "quantitative",
-          "title": "\u2191 Consumer Buying (Avg Annual Spend)",
+          "title": "Consumer Buying (Avg Annual Spend)",
           "scale": {"zero": false}
         },
         "color": {
