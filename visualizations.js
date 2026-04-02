@@ -460,3 +460,101 @@ vegaEmbed("#vis-HeatMap", {
 }, {
   "actions": false
 });
+ 
+// consumer spending vs labour risk scatterplot viz
+vegaEmbed('#vis-social-scatter', {
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  width: "container",
+  height: 420,
+  config: config,
+  title: {
+    text: "Consumer Spending vs Labour Risk by Brand",
+    anchor: "start",
+    fontSize: 18,
+    offset: 15
+  },
+  data: dataSource,
+  transform: [
+    // labour risk score, taking into account  hours, lower compliance score, more child labour incidents
+    {"calculate": "datum.Working_Hours_Per_Week * 0.4 + (100 - datum.Compliance_Score) * 0.15 + datum.Child_Labor_Incidents * 0.5", "as": "Labour_Risk_Score"},
+    // consumer avg annual spend per purhcase times frequency 
+    {"calculate": "datum.Avg_Spend_Per_Customer_USD * datum.Shopping_Frequency_Per_Year", "as": "Annual_Spend"}
+  ],
+  layer: [
+    {
+      "mark": {"type": "errorband", "extent": "ci", "color": "#e0e0e0"},
+      "encoding": {
+        "x": {"field": "Labour_Risk_Score", "type": "quantitative", "bin": {"maxbins": 30}},
+        "y": {"field": "Annual_Spend", "type": "quantitative"}
+      }
+    },
+    //trend lines
+    {
+      "mark": {"type": "line", "color": "black", "strokeWidth": 2},
+      "transform": [
+        {"regression": "Annual_Spend", "on": "Labour_Risk_Score", "method": "linear"}
+      ],
+      "encoding": {
+        "x": {"field": "Labour_Risk_Score", "type": "quantitative"},
+        "y": {"field": "Annual_Spend", "type": "quantitative"}
+      }
+    },
+    //scatter points
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
+            {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
+          ],
+          "groupby": ["Brand"]
+        }
+      ],
+      "mark": {"type": "circle", "size": 250, "opacity": 1},
+      "encoding": {
+        "x": {
+          "field": "avg_risk",
+          "type": "quantitative",
+          "title": "Average Labour Risk Score →",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "avg_spend",
+          "type": "quantitative",
+          "title": "↑ Consumer Buying Proxy (Avg Annual Spend)"
+        },
+        "color": {
+          "field": "Brand",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
+            "range": ["#e8837c", "#4a7fb5", "#7bc8a4", "#f0a948", "#5cb85c"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {"field": "Brand", "type": "nominal"},
+          {"field": "avg_risk", "type": "quantitative", "title": "Labour Risk Score", "format": ".1f"},
+          {"field": "avg_spend", "type": "quantitative", "title": "Avg Annual Spend", "format": "$,.0f"}
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "aggregate": [
+            {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
+            {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
+          ],
+          "groupby": ["Brand"]
+        }
+      ],
+      "mark": {"type": "text", "dy": -18, "fontSize": 13, "fontWeight": "bold", "color": "#333"},
+      "encoding": {
+        "x": {"field": "avg_risk", "type": "quantitative"},
+        "y": {"field": "avg_spend", "type": "quantitative"},
+        "text": {"field": "Brand", "type": "nominal"}
+      }
+    }
+  ]
+}, { actions: false });
