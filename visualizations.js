@@ -550,3 +550,112 @@ vegaEmbed('#vis-social-scatter', {
     }
   ]
 }, { actions: false });
+
+// public sentiment vs ethical rating scatterplot
+
+vegaEmbed('#vis-ethics-sentiment', {
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+  width: "container",
+  height: 420,
+  config: config,
+  title: {
+    text: "Public Sentiment vs Ethical Rating by Brand",
+    anchor: "start",
+    fontSize: 18,
+    offset: 15
+  },
+  data: dataSource,
+  transform: [
+    {
+      "aggregate": [
+        { "op": "mean", "field": "Ethical_Rating", "as": "avg_ethics" },
+        { "op": "mean", "field": "Sentiment_Score", "as": "avg_sentiment" }
+      ],
+      "groupby": ["Brand"]
+    }
+  ],
+  layer: [
+    {
+      "transform": [
+        { "regression": "avg_sentiment", "on": "avg_ethics", "method": "linear" }
+      ],
+      "mark": {
+        "type": "line",
+        "color": "black",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "avg_ethics",
+          "type": "quantitative",
+          "scale": { "zero": false }
+        },
+        "y": {
+          "field": "avg_sentiment",
+          "type": "quantitative",
+          "scale": { "zero": false }
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 250,
+        "stroke": "white",
+        "strokeWidth": 1.5
+      },
+      "encoding": {
+        "x": {
+          "field": "avg_ethics",
+          "type": "quantitative",
+          "title": "Average Ethical Rating →",
+          "scale": { "zero": false }
+        },
+        "y": {
+          "field": "avg_sentiment",
+          "type": "quantitative",
+          "title": "↑ Average Public Sentiment Score",
+          "scale": { "zero": false }
+        },
+        "color": {
+          "field": "Brand",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
+            "range": ["#e8837c", "#4a7fb5", "#7bc8a4", "#f0a948", "#5cb85c"]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          { "field": "Brand", "type": "nominal" },
+          {
+            "field": "avg_ethics",
+            "type": "quantitative",
+            "title": "Avg Ethical Rating",
+            "format": ".3f"
+          },
+          {
+            "field": "avg_sentiment",
+            "type": "quantitative",
+            "title": "Avg Public Sentiment Score",
+            "format": ".3f"
+          }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -18,
+        "fontSize": 13,
+        "fontWeight": "bold",
+        "color": "#333"
+      },
+      "encoding": {
+        "x": { "field": "avg_ethics", "type": "quantitative" },
+        "y": { "field": "avg_sentiment", "type": "quantitative" },
+        "text": { "field": "Brand", "type": "nominal" }
+      }
+    }
+  ]
+}, { actions: false });
