@@ -475,53 +475,53 @@ vegaEmbed('#vis-social-scatter', {
   },
   data: dataSource,
   transform: [
-    // labour risk score, taking into account  hours, lower compliance score, more child labour incidents
+    // labour risk score, taking into account hours, lower compliance score, more child labour incidents
     {"calculate": "datum.Working_Hours_Per_Week * 0.4 + (100 - datum.Compliance_Score) * 0.15 + datum.Child_Labor_Incidents * 0.5", "as": "Labour_Risk_Score"},
-    // consumer avg annual spend per purhcase times frequency 
-    {"calculate": "datum.Avg_Spend_Per_Customer_USD * datum.Shopping_Frequency_Per_Year", "as": "Annual_Spend"}
+    // consumer avg annual spend per purchase times frequency
+    {"calculate": "datum.Avg_Spend_Per_Customer_USD * datum.Shopping_Frequency_Per_Year", "as": "Annual_Spend"},
+    // aggregate by brand 
+    {
+      "aggregate": [
+        {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
+        {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
+      ],
+      "groupby": ["Brand"]
+    }
   ],
   layer: [
     {
-      "mark": {"type": "errorband", "extent": "ci", "color": "#e0e0e0"},
+      "mark": {"type": "errorband", "extent": "stdev", "color": "#e0e0e0"},
       "encoding": {
-        "x": {"field": "Labour_Risk_Score", "type": "quantitative", "bin": {"maxbins": 30}},
-        "y": {"field": "Annual_Spend", "type": "quantitative"}
+        "x": {"field": "avg_risk", "type": "quantitative", "scale": {"zero": false}},
+        "y": {"field": "avg_spend", "type": "quantitative", "scale": {"zero": false}}
       }
     },
-    //trend lines
+    // trend lines
     {
       "mark": {"type": "line", "color": "black", "strokeWidth": 2},
       "transform": [
-        {"regression": "Annual_Spend", "on": "Labour_Risk_Score", "method": "linear"}
+        {"regression": "avg_spend", "on": "avg_risk", "method": "linear"}
       ],
       "encoding": {
-        "x": {"field": "Labour_Risk_Score", "type": "quantitative"},
-        "y": {"field": "Annual_Spend", "type": "quantitative"}
+        "x": {"field": "avg_risk", "type": "quantitative"},
+        "y": {"field": "avg_spend", "type": "quantitative"}
       }
     },
-    //scatter points
+    // scatter points for each
     {
-      "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
-            {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
-          ],
-          "groupby": ["Brand"]
-        }
-      ],
       "mark": {"type": "circle", "size": 250, "opacity": 1},
       "encoding": {
         "x": {
           "field": "avg_risk",
           "type": "quantitative",
-          "title": "Average Labour Risk Score →",
+          "title": "Average Labour Risk Score \u2192",
           "scale": {"zero": false}
         },
         "y": {
           "field": "avg_spend",
           "type": "quantitative",
-          "title": "↑ Consumer Buying Proxy (Avg Annual Spend)"
+          "title": "\u2191 Consumer Buying (Avg Annual Spend)",
+          "scale": {"zero": false}
         },
         "color": {
           "field": "Brand",
@@ -539,16 +539,8 @@ vegaEmbed('#vis-social-scatter', {
         ]
       }
     },
+    // brand name labels
     {
-      "transform": [
-        {
-          "aggregate": [
-            {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
-            {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
-          ],
-          "groupby": ["Brand"]
-        }
-      ],
       "mark": {"type": "text", "dy": -18, "fontSize": 13, "fontWeight": "bold", "color": "#333"},
       "encoding": {
         "x": {"field": "avg_risk", "type": "quantitative"},
