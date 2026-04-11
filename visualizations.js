@@ -107,7 +107,9 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
             field: "factoryCount",
             type: "quantitative",
             title: "Factory Count",
-            scale: { scheme: "oranges" }
+            scale: {
+                range: ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+            }
           },
           tooltip: [
             { field: "properties.name", type: "nominal", title: "Country" },

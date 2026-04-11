@@ -19,11 +19,11 @@
    <nav class="nav-bar">
     <button class="burger" onclick="toggleMenu()">  <span class="burger-icon">☰</span></button>
     <ul class="nav-links" id="navLinks">
-      <li><a href="#">Intro</a></li>
-      <li><a href="#">Fast Fashion Impact</a></li>
-      <li><a href="#">Human Cost</a></li>
-      <li><a href="#">Environmental Cost</a></li>
-      <li><a href="#">Social Impact</a></li>
+      <li><a href="#intro">Intro</a></li>
+      <li><a href="#impact">Fast Fashion Impact</a></li>
+      <li><a href="#human_cost">Human Cost</a></li>
+      <li><a href="#environmental_cost">Environmental Cost</a></li>
+      <li><a href="#social_impact">Social Impact</a></li>
     </ul>
    </nav>
    <!-- Intro (basic white) -->
@@ -37,188 +37,200 @@
         <div class="line">of Fast Fashion</div>
       </div>
       <p class="hero-subtitle">How cheap clothes come at hidden costs.</p>
-      <p class="hero-subtitle">By Team MEEP MEEP</p>
+      <p class="hero-subtitle highlight">By Team MEEP MEEP</p>
     </div>
    </div>
 
    <!-- Overview -->
-   <section class="scroll-step" id="intro">
-    <div class="textBox reveal">
-      <h1>The Fast Fashion Impact</h1>
-      <p>In 2023, the  fast fashion industry was estimated to be worth $122.98 billion and is expected to reach $197.5 billion by 2028. At its core, fast fashion is the production of low-quality clothes that mimic popular-styles and trends sold at rock-bottom prices. This makes it easy for consumers to purchase stylish items, which promotes frequent shopping and quick turnovers in trends and fashion collections. The main goal of fast fashion is to essentially get people to spend more money on clothes they use for shorter times</p>
-      <p>Today, we will be examining the social, environmental and ethical impact of the 5 most dominant fast fashion brands of today, <span class="highlight">Shein, Forever21, Zara, H&M and Uniqlo.</span></p>
-      <img src="brands.png" alt="Logos of the 5 Prevelant Fast Fashion Brands">
-    </div>
-   </section>
+    <section id="impact">
+      <section class="scroll-step">
+        <div class="textBox reveal">
+          <h1>The Fast Fashion Impact</h1>
+          <p>In 2023, the  fast fashion industry was estimated to be worth <a class="text-link" target="_blank" href="https://www.deedsmag.com/stories/fast-fashion----the-emergence-the-upsurge-and-the-implications">$122.98 billion</a> and is expected to reach $197.5 billion by 2028. At its core, fast fashion is the production of low-quality clothes that mimic popular-styles and trends sold at rock-bottom prices. This makes it easy for consumers to purchase stylish items, which promotes frequent shopping and quick turnovers in trends and fashion collections. The main goal of fast fashion is to essentially get people to spend more money on clothes they use for shorter times</p>
+          <p>Today, we will be examining the social, environmental and ethical impact of the 5 most dominant fast fashion brands of today, <span class="highlight">Shein, Forever21, Zara, H&M and Uniqlo.</span></p>
+          <img src="assets/img/brands.png" alt="Logos of the 5 Prevelant Fast Fashion Brands">
+        </div>
+      </section>
 
-   <!-- Zoom Text (factories) -->
-   <section class="scroll-step">
-    <div class ="introBox reveal">
-      <h1 class="zoom-text">Let’s zoom out and see where these brands factories are located to see if we can identify any patterns.</h1>
-    </div>
-   </section>
+      <!-- Zoom Text (factories) -->
+      <section class="scroll-step">
+        <img class="cutout" src="assets/img/factory.png" alt="factory cutout">
+        <div class ="introBox reveal">
+          <h1 class="zoom-text">Let’s zoom out and see where these <span class="text-highlight">brands factories</span> are located to see if we can identify any patterns.</h1>
+        </div>
+      </section>
 
-   <!-- Factory Locations -->
-   <section class="scroll-step">
-    <div class="story-block reveal">
-      <div class ="sectionSplitter">
-        <!-- <h2>FACTORY LOCATIONS</h2> -->
-        <h1>FAR FROM THE STOREFRONT</h1>
-      </div>
-      <div class="textBox">
-        <p>Fast fashion may be sold in polished malls and online storefronts, but its production network stretches far beyond where most people shop. 
-          This map reveals where our featured brands manufacture across the globe. A strong cluster appears across Asia, where brands 
-          rely on established manufacturing networks, lower labour costs, and weaker worker protections to produce clothing at scale.</p>
-      </div>
-      <div class="chart-wrapper">
-        <div id="vis-map"></div>
-      </div>
-    </div>
+      <!-- Factory Locations -->
+      <section class="scroll-step">
+        <div class="story-block reveal">
+          <div class ="sectionSplitter">
+            <!-- <h2>FACTORY LOCATIONS</h2> -->
+            <h1>FAR FROM THE STOREFRONT</h1>
+          </div>
+          <div class="textBox">
+            <p>Fast fashion may be sold in polished malls and online storefronts, but its production network stretches far beyond where most people shop. 
+              This map reveals where our featured brands manufacture across the globe. A strong cluster appears across Asia, where brands 
+              rely on established manufacturing networks, <a class="text-link" href="https://www.earthday.org/beneath-the-seams-the-human-toll-of-fast-fashion/" target="_blank">lower labour costs</a>, and weaker worker protections to produce clothing at scale.</p>
+          </div>
+          <div class="chart-wrapper">
+            <div id="vis-map"></div>
+          </div>
+        </div>
+      </section>
    </section>
 
    <!-- Zoom Text (human cost) -->
-   <section class="scroll-step">
-    <div class ="introBox reveal">
-      <h1 class="zoom-text">But who is making these clothes and at what cost?</h1>
-    </div>
-   </section>
+    <section id="human_cost">
+      <section class="scroll-step">
+        <img class="cutout" src="assets/img/trash-bin.png" alt="trash bin with clothes">
+        <div class ="introBox reveal">
+          <h1 class="zoom-text">But who is making these clothes and at what cost?</h1>
+        </div>
+      </section>
 
-   <!-- Human Cost -->
-   <!-- Human Cost: Intro -->
-   <section class="scroll-step">
-    <div class="story-block reveal">
-      <div class="sectionSplitter">
-        <h2>THE HUMAN COST</h2>
-        <h1>THE HANDS BEHIND THE CLOTHES</h1>
-      </div>
-      <div class="textBox">
-        <p>Cheap clothing depends on cheap labour. Behind every low-priced, ‘steal’ clothing in fast fashion, there are workers who are sacrificing their health, time, and life to make that possible. Long hours, unsafe working conditions, and low wages are often normalized within these production systems, allowing brands to maintain high output at minimal cost.</p>
-      </div>
-    </div>
-   </section>
-   <!-- Human Cost Charts -->
-   <section class="scroll-step">
-    <div class="story-block reveal">
-      <div class="textBox">
-        <h2>The Gap Between Earnings and Price</h2>
-        <p>To demonstrate this, let’s compare the daily wage of a worker versus the price of a single item they produce per brand. In every case, a worker <span class="highlight">cannot afford a single piece of clothing with their entire day's pay.</span></p>
-        <p>Below is the cost without even taking into account the number of hours a worker works in a day and assuming they work the typical 23 working days per month, which is highly unlikely.</p>
-      </div>
-      <div class="chart-wrapper">
-        <div id="vis-bars"></div>
-      </div>
-      <div class="textBox">
-        <p>This comparison shows the disparity between how much brands charge for their clothing compared to how much they pay their workers. For <span class="highlight"> a worker from any one of the 5 brands</span> to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
-      </div>
-     </section>
-     <section class="scroll-step">
-      <div class="story-block reveal">
-        <div class="textBox">
-          <h2>A Closer Look at Wages and Working Hours</h2>
-          <p>However, when we take a closer look, we see the differences in work hours and fluctuating wages they impose on their workforce across different factories, taking advantage of labour laws in the global south.</p>
-          <p>Use the map and <span class="highlight">hover over</span> each country to see the daily wage and daily working hours these workers are subjugated to. <span class="highlight">Click the buttons</span> to toggle between brands to see the differences between them.</p>
+      <!-- Human Cost -->
+      <!-- Human Cost: Intro -->
+      <section class="scroll-step">
+        <div class="story-block reveal">
+          <div class="sectionSplitter">
+            <h2>THE HUMAN COST</h2>
+            <h1>THE HANDS BEHIND THE CLOTHES</h1>
+          </div>
+          <div class="textBox">
+            <p>Cheap clothing depends on cheap labour. Behind every low-priced, ‘steal’ clothing in fast fashion, there are workers who are sacrificing their health, time, and life to make that possible. Long hours, unsafe working conditions, and low wages are often normalized within these production systems, allowing brands to maintain high output at minimal cost.</p>
+          </div>
         </div>
-        <div class="chart-wrapper">
-          <div id="vis-Wagemap"></div>
-        </div>
-      </div>
-     </section>
+      </section>
+      <!-- Human Cost Charts -->
+      <section class="scroll-step">
+        <div class="story-block reveal">
+          <div class="textBox">
+            <h2>The Gap Between Earnings and Price</h2>
+            <p>To demonstrate this, let’s compare the daily wage of a worker versus the price of a single item they produce per brand. In every case, a worker <span class="highlight">cannot afford a single piece of clothing with their entire day's pay.</span></p>
+            <p>Below is the cost without even taking into account the number of hours a worker works in a day and assuming they work the typical 23 working days per month, which is highly unlikely.</p>
+          </div>
+          <div class="chart-wrapper">
+            <div id="vis-bars"></div>
+          </div>
+          <div class="textBox">
+            <p>This comparison shows the disparity between how much brands charge for their clothing compared to how much they pay their workers. For <span class="highlight"> a worker from any one of the 5 brands</span> to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
+          </div>
+        </section>
+        <section class="scroll-step">
+          <div class="story-block reveal">
+            <div class="textBox">
+              <h2>A Closer Look at Wages and Working Hours</h2>
+              <p>However, when we take a closer look, we see the differences in work hours and fluctuating wages they impose on their workforce across different factories, taking advantage of labour laws in the global south.</p>
+              <p>Use the map and <span class="highlight">hover over</span> each country to see the daily wage and daily working hours these workers are subjugated to. <span class="highlight">Click the buttons</span> to toggle between brands to see the differences between them.</p>
+            </div>
+            <div class="chart-wrapper">
+              <div id="vis-Wagemap"></div>
+            </div>
+          </div>
+        </section>
+      </section>
      <!-- Zoom Text (environment) -->
-     <section class="scroll-step">
-      <div class ="introBox reveal">
-        <h1 class="zoom-text">Fast fashion doesn’t just impact workers - it harms the planet at every stage of its production.</h1>
-      </div>
-     </section>
+      <section id="environmental_cost">
+        <section class="scroll-step">
+          <img class="cutout" src="assets/img/earth.png" alt="planet earth">
+          <div class ="introBox reveal">
+            <h1 class="zoom-text">Fast fashion doesn’t just impact workers - it harms the planet at every stage of its production.</h1>
+          </div>
+        </section>
 
-     <!-- Environmental Cost -->
-     <section class="scroll-step">
-      <div class="story-block reveal">
-        <div class ="sectionSplitter">
-          <h2>THE ENVIRONMENTAL COST</h2>
-          <h1>HOW THE PLANET PAYS THE PRICE</h1>
-        </div>
-        <div class="textBox">
-          <p>Fast fashion has a heavy environmental footprint. Producing garments consumes large amounts of water, especially during material processing and dyeing, while manufacturing and global distribution contribute to rising carbon emissions. Because these clothes are often worn only briefly, many are quickly discarded, adding to the increasing volume of textile waste in landfills. As a result, fast fashion’s speed and scale come at a significant cost to the planet.</p>
-        </div>
-      </div>
-     </section>
-     <!-- Environmental Cost Charts -->
-     <!-- visulaizaiton co2 emmisions-->
-     <section class="scroll-step">
-      <div class="story-block reveal">
-        <div class="textBox">
-          <h2>TITLE HERE FOR THESE VISUALIZATION</h2>
-          <p>Every year, these five brands alone churn out over hundred thousands CO2 emmisions per factory.</p>
-          <p>Drag the slider to see the CO2 emmisions over the years</p>
-        </div>
-        <div class="chart-wrapper">
-          <div id="vis-HeatMap"></div>
-        </div>
-      </div>
-     </section>
-     <!-- visualziaiton water consumption-->
-     <section class="scroll-step">
-      <div class="story-block reveal">
-        <div class="textBox">
-          <h2>WATER CONSUMPTION</h2>
-          <p>To produce this much, the water requirement is staggering. Below we compare the amount of water used by each brand each year to maintain their production.</p>
-        </div>
-        <div class="chart-wrapper">
-          <div id="vis-water"></div>
-        </div>
-        <div class="textBox">
-            <p class="annotation">The red line at the bottom represents 1 year of life for a family of four. The bars represent 1 year of production.</p>
-        </div>
-      </div>
-     </section>
+        <!-- Environmental Cost -->
+        <section class="scroll-step">
+          <div class="story-block reveal">
+            <div class ="sectionSplitter">
+              <h2>THE ENVIRONMENTAL COST</h2>
+              <h1>HOW THE PLANET PAYS THE PRICE</h1>
+            </div>
+            <div class="textBox">
+              <p>Fast fashion has a heavy environmental footprint. Producing garments consumes large amounts of water, especially during material processing and dyeing, while manufacturing and global distribution contribute to rising carbon emissions. Because these clothes are often worn only briefly, many are quickly discarded, adding to the increasing volume of textile waste in landfills. As a result, fast fashion’s speed and scale come at a significant cost to the planet.</p>
+            </div>
+          </div>
+        </section>
+        <!-- Environmental Cost Charts -->
+        <!-- visulaizaiton co2 emmisions-->
+        <section class="scroll-step">
+          <div class="story-block reveal">
+            <div class="textBox">
+              <h2>TITLE HERE FOR THESE VISUALIZATION</h2>
+              <p>Every year, these five brands alone churn out over hundred thousands CO2 emmisions per factory.</p>
+              <p>Drag the slider to see the CO2 emmisions over the years</p>
+            </div>
+            <div class="chart-wrapper">
+              <div id="vis-HeatMap"></div>
+            </div>
+          </div>
+        </section>
+        <!-- visualziaiton water consumption-->
+        <section class="scroll-step">
+          <div class="story-block reveal">
+            <div class="textBox">
+              <h2>WATER CONSUMPTION</h2>
+              <p>To produce this much, the water requirement is staggering. Below we compare the amount of water used by each brand each year to maintain their production.</p>
+            </div>
+            <div class="chart-wrapper">
+              <div id="vis-water"></div>
+            </div>
+            <div class="textBox">
+                <p class="annotation">The red line at the bottom represents 1 year of life for a family of four. The bars represent 1 year of production.</p>
+            </div>
+          </div>
+        </section>
+      </section>
 
      <!-- Zoom Text (social impact) -->
-     <section class="scroll-step">
-      <div class ="introBox reveal">
-        <h1 class="zoom-text">What about the social apsect of the issue?</h1>
-      </div>
-     </section>
+      <section id="social_impact">
+        <section class="scroll-step">
+          <img class="cutout" src="assets/img/emotions.png" alt="emotions">
+          <div class ="introBox reveal">
+            <h1 class="zoom-text">What about the social apsect of the issue?</h1>
+          </div>
+        </section>
 
-     <!-- Social Impact -->
-     <section class="scroll-step">
+        <!-- Social Impact -->
+        <section class="scroll-step" id="social_impact">
+          <div class="story-block reveal">
+            <div class ="sectionSplitter">
+              <h2>THE SOCIAL IMPACT</h2>
+              <h1>SEW, DO THESE ISSUES EVEN MATTER TO CONSUMERS?</h1>
+            </div>
+            <div class ="textBox">
+              <p>Some text</p>
+            </div>
+          </div>
+        </section>
+        <!-- Social Impact Charts -->
+        <section class="scroll-step">
+          <div class="story-block reveal">
+            <div class ="textBox">
+              <h2>Do consumers buy more from brands with bad labour conditions?
+    </h2>
+              <p>This visualization shows that higher labour risks doesn’t discourage purchasing, with some of the most successful brands also having the highest labour risk score.</p>
+            </div>
+            <div class="chart-wrapper">
+              <div id="vis-social-scatter"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="scroll-step">
       <div class="story-block reveal">
-        <div class ="sectionSplitter">
-          <h2>THE SOCIAL IMPACT</h2>
-          <h1>SEW, DO THESE ISSUES EVEN MATTER TO CONSUMERS?</h1>
-        </div>
-         <div class ="textBox">
-          <p>Some text</p>
-        </div>
-      </div>
-    </section>
-    <!-- Social Impact Charts -->
-    <section class="scroll-step">
-      <div class="story-block reveal">
-        <div class ="textBox">
-          <h2>Do consumers buy more from brands with bad labour conditions?
-</h2>
-          <p>This visualization shows that higher labour risks doesn’t discourage purchasing, with some of the most successful brands also having the highest labour risk score.</p>
+        <div class="textBox">
+          <h2>Does the general public's opinion of these brands reflect their ethics?</h2>
+          <p>
+            This visualization compares each brands' average ethical rating with its average public sentiment score,
+            It really shows whether brands that although these brands have poor ethical ratings, their social standing remains unaffected.
+          </p>
         </div>
         <div class="chart-wrapper">
-          <div id="vis-social-scatter"></div>
+          <div id="vis-ethics-sentiment"></div>
         </div>
       </div>
     </section>
-
-    <section class="scroll-step">
-  <div class="story-block reveal">
-    <div class="textBox">
-      <h2>Does the general public's opinion of these brands reflect their ethics?</h2>
-      <p>
-        This visualization compares each brands' average ethical rating with its average public sentiment score,
-        It really shows whether brands that although these brands have poor ethical ratings, their social standing remains unaffected.
-      </p>
-    </div>
-    <div class="chart-wrapper">
-      <div id="vis-ethics-sentiment"></div>
-    </div>
-  </div>
-</section>
+    </section>
 
     <!-- Scripts -->
     <script src="visualizations.js"></script>

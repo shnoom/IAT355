@@ -32,3 +32,74 @@ revealElements.forEach(el => observer.observe(el));
 function toggleMenu() {
     document.getElementById("navLinks").classList.toggle("active");
   }
+
+/* Active Menu */
+document.addEventListener("DOMContentLoaded", () => {
+  const navLinks = document.querySelectorAll(".nav-links a");
+
+  const sectionOffsets = {
+    "#intro": 0,
+    "#impact": 400,
+    "#human_cost": 500,
+    "#environmental_cost": 500,
+    "#social_impact": 500
+  };
+
+  const sections = Object.keys(sectionOffsets)
+    .map((id) => document.querySelector(id))
+    .filter(Boolean);
+
+  function setActiveLink() {
+    const scrollPosition = window.scrollY + window.innerHeight * 0.35;
+
+    let currentSection = null;
+
+    sections.forEach((section) => {
+      const id = `#${section.id}`;
+      const extraOffset = sectionOffsets[id] || 0;
+      const sectionTop = section.offsetTop + extraOffset;
+      const sectionBottom = sectionTop + section.offsetHeight;
+
+      if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+        currentSection = id;
+      }
+    });
+
+    navLinks.forEach((link) => {
+      link.classList.remove("active");
+      if (link.getAttribute("href") === currentSection) {
+        link.classList.add("active");
+      }
+    });
+  }
+
+  navLinks.forEach((link) => {
+    link.addEventListener("click", (e) => {
+      const href = link.getAttribute("href");
+      const section = document.querySelector(href);
+
+      if (!section) return;
+
+      e.preventDefault();
+
+      const baseTop = section.getBoundingClientRect().top + window.scrollY;
+      const extraOffset = sectionOffsets[href] || 0;
+      const navOffset = 90;
+
+      window.scrollTo({
+        top: baseTop + extraOffset - navOffset,
+        behavior: "smooth"
+      });
+
+      history.replaceState(null, "", href);
+
+      navLinks.forEach((item) => item.classList.remove("active"));
+      link.classList.add("active");
+    });
+  });
+
+  window.addEventListener("scroll", setActiveLink);
+  window.addEventListener("load", setActiveLink);
+  setActiveLink();
+});
+
