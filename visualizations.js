@@ -246,6 +246,7 @@ vegaEmbed('#vis-wage', {
 
 vegaEmbed('#vis-bars', {
   ...config,
+  
   "data": dataSource,
   title: {
       text: "Average Item Price vs Daily Wage for Workers by Brand",
@@ -254,7 +255,7 @@ vegaEmbed('#vis-bars', {
       offset: 15
     },
   "width": "container",
-  "height": 300,
+  "height": 420,
   "transform": [
     // divide by 23 (average working days) since it onyl gives a monthly wage
     {"calculate": "datum.Avg_Worker_Wage_USD / 23", "as": "Daily_Wage"},
@@ -311,6 +312,7 @@ vegaEmbed("#vis-Wagemap", {
   $schema: "https://vega.github.io/schema/vega-lite/v5.json",
   width: "container",
   height: 420,
+  
   title: {
     text: "Daily Wage & Labour Hours by Brand & Country",
     anchor: "start",
@@ -322,7 +324,7 @@ vegaEmbed("#vis-Wagemap", {
       "name": "brand_select",
       "value": "Shein",
       "bind": {
-        "input": "select", 
+        "input": "radio", 
         "options": ["Shein", "Zara", "Uniqlo", "Forever 21", "H&M"],
         "name": "Brand: "
       }
@@ -388,7 +390,9 @@ vegaEmbed("#vis-Wagemap", {
           "field": "Hourly_Wage",
           "type": "quantitative",
           "title": "Hourly Wage ($)",
-          "scale": { "scheme": "yellowgreenblue" }
+          "scale": {
+                range: ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+            }
         },
         "tooltip": [
           { "field": "map_name", "type": "nominal", "title": "Country" },
