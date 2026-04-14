@@ -545,7 +545,7 @@ vegaEmbed('#vis-social-scatter', {
           "type": "nominal",
           "scale": {
             "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
-            "range": ["#e8837c", "#4a7fb5", "#7bc8a4", "#f0a948", "#5cb85c"]
+"range": ["#ffd6ea", "#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
           },
           "legend": null
         },
@@ -639,7 +639,7 @@ vegaEmbed('#vis-ethics-sentiment', {
           "type": "nominal",
           "scale": {
             "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
-            "range": ["#e8837c", "#4a7fb5", "#7bc8a4", "#f0a948", "#5cb85c"]
+"range": ["#ffd6ea", "#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
           },
           "legend": null
         },
