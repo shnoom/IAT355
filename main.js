@@ -1,3 +1,67 @@
+// register plugin 
+gsap.registerPlugin(ScrollTrigger);
+
+const keywords = { "20": "meow", "wash": "wash", "cost": "cost" };
+const paragraphs = document.querySelectorAll('.anim-text p');
+
+
+paragraphs.forEach(p => {
+  const words = p.innerText.split(" ");
+  p.innerHTML = ""; 
+  words.forEach(word => {
+    const wordDiv = document.createElement("div");
+    wordDiv.classList.add("word");
+    const span = document.createElement("span");
+    span.innerText = word;
+    const cleanWord = word.toLowerCase().replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+    if (keywords[cleanWord]) {
+      wordDiv.classList.add("keyword-wrapper");
+      span.classList.add("keyword", keywords[cleanWord]);
+    }
+    wordDiv.appendChild(span);
+    p.appendChild(wordDiv);
+  });
+});
+
+const section = document.querySelector(".anim-text-container");
+const allWords = section.querySelectorAll(".word");
+
+// animation
+ScrollTrigger.create({
+  trigger: ".anim-text-container",
+  start: "top top",
+  end: "+=300%", 
+  pin: true,
+  scrub: 1,
+  onUpdate: (self) => {
+    const progress = self.progress;
+    const totalWords = allWords.length;
+    const staggerAmount = 0.15;
+
+    allWords.forEach((word, index) => {
+      const innerSpan = word.querySelector("span");
+      
+  
+      const revealStart = index / totalWords* (1 - staggerAmount);
+      const revealEnd = revealStart + staggerAmount;
+      
+      let wordProgress = (progress - revealStart) / (revealEnd - revealStart);
+      wordProgress = Math.max(0, Math.min(1, wordProgress));
+
+      word.style.opacity = wordProgress;
+      if (wordProgress > 0.8) {
+        // Fade text in
+        innerSpan.style.opacity = 1;
+        word.style.backgroundColor = "rgba(0,0,0,0)";
+      } else {
+  
+        innerSpan.style.opacity = 0;
+
+        word.style.backgroundColor = "rgba(0,0,0,0.1)"; 
+      }
+    });
+  }
+});
 /* Zoom text on scroll */
 const zoomTexts = document.querySelectorAll(".zoom-text");
 window.addEventListener("scroll", () => {

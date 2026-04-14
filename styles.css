@@ -92,7 +92,9 @@ body {
   color: var(--text-color);
   font-family: 'Work Sans', sans-serif;
   margin: 0;
+  overflow-x: hidden;
   padding: 0;
+  background-attachment: fixed;
   line-height: 1.6;
     background-size: 40px 40px;
   background-image:
@@ -146,31 +148,31 @@ body {
 }
 /* Hero */
 .hero {
-position: relative; /* Essential for absolute positioning of piles */
+position: relative; 
   min-height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   margin-bottom: 4rem;
-  overflow: hidden; /* Prevents images from creating a horizontal scrollbar */
+  overflow: hidden; 
 }
 .pile{
   position: absolute;
-  bottom: 0;           /* Sit them on the bottom of the hero section */
-  width: 350px;        /* Adjust this to scale your images */
+  bottom: 0;         
+  width: 350px;        
   height: auto;
   top: 2rem;
-  z-index: 0;          /* Keeps them behind the text if they overlap */
-  pointer-events: none; /* Allows users to click "through" images if needed */
+  z-index: 0;          
+  pointer-events: none; 
 }
 
+/* adjust space of the piles in hero */
 .pile-left {
-  left: -25rem;         /* Adjust this to move it further off-screen or inward */
+  left: -22rem;         
 }
-
 .pile-right {
-  right: -25rem;        /* Adjust this to move it further off-screen or inward */
+  right: -22rem;       
 }
 .hero-content{
   position: relative;
@@ -375,6 +377,67 @@ section {
 /* Hide the ugly default radio circles */
 .vega-bind input[type="radio"] {
   display: none;
+}
+
+/* for whit shirt intro */
+.word {
+  display: inline-block;
+  position: relative;
+  margin: 0 2px;
+  padding: 2px 4px;
+  border-radius: 0.5rem;
+  background: rgba(31, 31, 31,0.2); /* Subtle highlight */
+  opacity: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.word span {
+  position: relative;
+  z-index: 2;
+  opacity: 0;
+  color: var(--text-color);
+}
+.anim-text-container {
+  width: 100%;
+  height: 100vh; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+
+}
+
+.intro-wrapper{
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: space-between;
+max-width: 1050px;
+  width: 100%;
+  gap: 2.5rem;
+}
+
+.image-side {
+  flex: 1 1 80%; 
+  display: flex;
+  justify-content: center;
+}
+
+
+/* highlights for keywords */
+.keyword.meow::before { background: var(--accent-pink); }
+.keyword.wash::before  { background: var(--accent-pink); } 
+.keyword.cost::before  { background: var(--accent-pink); } 
+
+
+.keyword::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  border-radius: 0.5rem;
+  z-index: -1;
 }
 
 section{
