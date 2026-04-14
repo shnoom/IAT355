@@ -94,6 +94,12 @@ body {
   margin: 0;
   padding: 0;
   line-height: 1.6;
+    background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, rgb(235, 235, 235) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(235, 235, 235) 1px, transparent 1px);
+
+
 }
 /* Nav */
 .nav-bar {
@@ -140,16 +146,35 @@ body {
 }
 /* Hero */
 .hero {
+position: relative; /* Essential for absolute positioning of piles */
   min-height: 65vh;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   margin-bottom: 4rem;
-  
+  overflow: hidden; /* Prevents images from creating a horizontal scrollbar */
+}
+.pile{
+  position: absolute;
+  bottom: 0;           /* Sit them on the bottom of the hero section */
+  width: 350px;        /* Adjust this to scale your images */
+  height: auto;
+  top: 2rem;
+  z-index: 0;          /* Keeps them behind the text if they overlap */
+  pointer-events: none; /* Allows users to click "through" images if needed */
+}
+
+.pile-left {
+  left: -25rem;         /* Adjust this to move it further off-screen or inward */
+}
+
+.pile-right {
+  right: -25rem;        /* Adjust this to move it further off-screen or inward */
 }
 .hero-content{
   position: relative;
+  z-index: 1;
 }
 
 .hero-title {

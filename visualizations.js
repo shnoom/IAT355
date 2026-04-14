@@ -172,6 +172,16 @@ vegaEmbed('#vis-water', {
           "type": "quantitative",
           "title": "Total Million Litres"
         },
+        "color": {
+          "aggregate": "sum",
+          "field": "Water_Usage_Million_Litres",
+          "type": "quantitative",
+          "scale": {
+            "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+          },
+          "legend": {"title": "Usage Intensity"}
+        },
+
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
           {"field": "Year", "type": "quantitative"},
@@ -296,7 +306,8 @@ vegaEmbed('#vis-bars', {
       "type": "nominal",
       "scale": {
         "domain": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
-        "range": ["#d65f5f", "#5b9bd5"]
+        "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+
       },
       "legend": {"title": "Metric"}
     },
@@ -390,7 +401,7 @@ vegaEmbed("#vis-Wagemap", {
           "field": "Hourly_Wage",
           "type": "quantitative",
           "title": "Hourly Wage ($)",
-          "scale": {
+           scale: {
                 range: ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
             }
         },
@@ -412,7 +423,7 @@ vegaEmbed("#vis-HeatMap", {
   "width": "container",
   "height": 420,
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Total Carbon Emissions Each Year by Brand and Country",
+  "title": "Total Carbon Emissions by Brand and Country",
 
   "transform": [
     {
@@ -442,9 +453,9 @@ vegaEmbed("#vis-HeatMap", {
       "field": "Carbon_Emissions_tCO2e",
       "type": "quantitative",
       "aggregate": "sum",
-      "scale": {
-        "scheme": "oranges"
-      },
+     "scale": {
+            "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+          },
       "title": "Total Emissions (CO2)"
     },
     "tooltip": [
