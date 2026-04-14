@@ -36,7 +36,7 @@ ScrollTrigger.create({
   onUpdate: (self) => {
     const progress = self.progress;
     const totalWords = allWords.length;
-    const staggerAmount = 0.15;
+    const staggerAmount = 0.12;
 
     allWords.forEach((word, index) => {
       const innerSpan = word.querySelector("span");
