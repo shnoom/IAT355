@@ -101,39 +101,9 @@ function toggleMenu() {
 document.addEventListener("DOMContentLoaded", () => {
   const navLinks = document.querySelectorAll(".nav-links a");
 
-  const sectionOffsets = {
-    "#intro": 0,
-    "#impact": 400,
-    "#human_cost": 500,
-    "#environmental_cost": 500,
-    "#social_impact": 500
-  };
-
-  const sections = Object.keys(sectionOffsets)
-    .map((id) => document.querySelector(id))
-    .filter(Boolean);
-
-  function setActiveLink() {
-    const scrollPosition = window.scrollY + window.innerHeight * 0.35;
-
-    let currentSection = null;
-
-    sections.forEach((section) => {
-      const id = `#${section.id}`;
-      const extraOffset = sectionOffsets[id] || 0;
-      const sectionTop = section.offsetTop + extraOffset;
-      const sectionBottom = sectionTop + section.offsetHeight;
-
-      if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
-        currentSection = id;
-      }
-    });
-
+  function activateLink(id) {
     navLinks.forEach((link) => {
-      link.classList.remove("active");
-      if (link.getAttribute("href") === currentSection) {
-        link.classList.add("active");
-      }
+      link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
     });
   }
 
@@ -146,24 +116,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
       e.preventDefault();
 
-      const baseTop = section.getBoundingClientRect().top + window.scrollY;
-      const extraOffset = sectionOffsets[href] || 0;
       const navOffset = 90;
+      const y = section.getBoundingClientRect().top + window.scrollY - navOffset;
 
       window.scrollTo({
-        top: baseTop + extraOffset - navOffset,
+        top: y,
         behavior: "smooth"
       });
 
       history.replaceState(null, "", href);
-
-      navLinks.forEach((item) => item.classList.remove("active"));
-      link.classList.add("active");
     });
   });
 
-  window.addEventListener("scroll", setActiveLink);
-  window.addEventListener("load", setActiveLink);
-  setActiveLink();
-});
+  ScrollTrigger.create({
+    trigger: "#intro",
+    start: "top center",
+    end: "+=300%",
+    onEnter: () => activateLink("intro"),
+    onEnterBack: () => activateLink("intro")
+  });
 
+  ScrollTrigger.create({
+    trigger: "#impact",
+    start: "top center",
+    end: "bottom center",
+    onEnter: () => activateLink("impact"),
+    onEnterBack: () => activateLink("impact")
+  });
+
+  ScrollTrigger.create({
+    trigger: "#human_cost",
+    start: "top center",
+    end: "bottom center",
+    onEnter: () => activateLink("human_cost"),
+    onEnterBack: () => activateLink("human_cost")
+  });
+
+  ScrollTrigger.create({
+    trigger: "#environmental_cost",
+    start: "top center",
+    end: "bottom center",
+    onEnter: () => activateLink("environmental_cost"),
+    onEnterBack: () => activateLink("environmental_cost")
+  });
+
+  ScrollTrigger.create({
+    trigger: "#social_impact",
+    start: "top center",
+    end: "bottom center",
+    onEnter: () => activateLink("social_impact"),
+    onEnterBack: () => activateLink("social_impact")
+  });
+});
