@@ -52,7 +52,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
     width: "container",
     height: 420,
     title: {
-      text: "Top Fast Fashion Manufacturing Countries",
+      text: "Global Fast Fashion Factory Hubs",
       anchor: "start",
       fontSize: 18,
       offset: 15
@@ -108,12 +108,14 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
             type: "quantitative",
             title: "Factory Count",
             scale: {
-                range: ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+                range: ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"],
+                domain: [270, 310]
             }
           },
           tooltip: [
             { field: "properties.name", type: "nominal", title: "Country" },
-            { field: "factoryCount", type: "quantitative", title: "Factories" }
+            { field: "factoryCount", type: "quantitative", title: "Factories" },
+            
           ]
         }
       }
@@ -153,51 +155,98 @@ vegaEmbed('#vis-water', {
   "data": dataSource,
   "width": "container",
   "height": 420,
+    title: {
+      text: "Water Usage by Fast Fashion Brands per Year ",
+       "subtitle": "Estimated annual water usage (in billion litres)",
+      anchor: "start",
+      fontSize: 18,
+      offset: 15
+    },
+
   "transform": [
     { "filter": "datum.Year == 2024" },
+    {
+      "aggregate": [
+        {
+          "op": "sum",
+          "field": "Water_Usage_Million_Litres",
+          "as": "Total_Million_Litres"
+        }
+      ],
+      "groupby": ["Brand"]
+    },
+    {
+      "calculate": "datum.Total_Million_Litres / 1000",
+      "as": "Total_Billion_Litres"
+    },
+    {
+      "joinaggregate": [
+        {"op": "max", "field": "Total_Billion_Litres", "as": "max_val"}
+      ]
+    },
+    {
+      "calculate": "datum.Total_Billion_Litres === datum.max_val ? 'highlight' : 'normal'",
+      "as": "highlight_flag"
+    }
   ],
+
   "layer": [
     {
-      "mark": {"type": "bar", "color": "#eee", "stroke":null,"clip":false},
+      "mark": {
+        "type": "bar",
+      },
       "encoding": {
         "x": {
           "field": "Brand",
           "type": "nominal",
           "sort": "-y",
-          "axis": {"labelAngle": 0}
+          "axis": {"labelAngle": 0, "title": "Brand"}
         },
         "y": {
-          "aggregate": "sum",
-          "field": "Water_Usage_Million_Litres",
+          "field": "Total_Billion_Litres",
           "type": "quantitative",
-          "title": "Total Million Litres"
+          "title": "Water Usage (Billion Litres)"
         },
         "color": {
-          "aggregate": "sum",
-          "field": "Water_Usage_Million_Litres",
-          "type": "quantitative",
+          "field": "highlight_flag",
+          "type": "nominal",
           "scale": {
-            "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+            "domain": ["highlight", "normal"],
+            "range": ["#7a1e4d", "#fbb1d8"]
           },
-          "legend": {"title": "Usage Intensity"}
+          "legend": null
         },
-
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
-          {"field": "Year", "type": "quantitative"},
           {
-            "aggregate": "sum", 
-            "field": "Water_Usage_Million_Litres", 
-            "type": "quantitative", 
-            "title": "Total Litres (Millions)", 
-            "format": ",.0f"
+            "field": "Total_Billion_Litres",
+            "type": "quantitative",
+            "title": "Water Usage (Billion Litres)",
+            "format": ".2f"
           }
         ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "dy": -5,
+        "fontSize": 11,
+        "color": "#333"
+      },
+      "encoding": {
+        "x": {"field": "Brand", "type": "nominal", "sort": "-y"},
+        "y": {"field": "Total_Billion_Litres", "type": "quantitative"},
+        "text": {
+          "field": "Total_Billion_Litres",
+          "type": "quantitative",
+          "format": ".2f"
+        }
       }
     }
   ]
 }, { "actions": false });
-
 // Chart 4: Cleveland dot plot for wage vs, price
 //ERROR i relaize in this visualization it like takes sum od all the locations for each retailer, so it skews it as factories in like develoopping countries have work weeks of like 40 vs more devellopping countries closer to 60+, were going to have to change and or do a second graph comparing GEOGRPAHICAL location ratehr than from rband but imm leave this for now for this submission
 
@@ -260,6 +309,7 @@ vegaEmbed('#vis-bars', {
   "data": dataSource,
   title: {
       text: "Average Item Price vs Daily Wage for Workers by Brand",
+      subtitle: "How many days a worker must labor to afford a single item from the brand",
       anchor: "start",
       fontSize: 18,
       offset: 15
@@ -278,12 +328,14 @@ vegaEmbed('#vis-bars', {
       ],
       "groupby": ["Brand"]
     },
+    {"calculate": "datum['Avg Item Price ($)'] / datum['Avg Daily Wage ($)']", "as": "Work_Ratio"},
     
     {
       "fold": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
       "as": ["Metric", "Value"]
     }
   ],
+  
   "mark": "bar",
   "encoding": {
     "x": {
@@ -306,13 +358,13 @@ vegaEmbed('#vis-bars', {
       "type": "nominal",
       "scale": {
         "domain": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
-        "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+        "range": ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"]
 
       },
       "legend": {"title": "Metric"}
     },
     "tooltip": [
-      {"field": "Brand", "type": "nominal"},
+      {"field": "Brand", "type": "nominal", title: "Brand"},
       {"field": "Metric", "type": "nominal"},
       {"field": "Value", "type": "quantitative","title": "Value", "format": "$.2f"}
     ]
@@ -322,10 +374,12 @@ vegaEmbed('#vis-bars', {
 vegaEmbed("#vis-Wagemap", {
   $schema: "https://vega.github.io/schema/vega-lite/v5.json",
   width: "container",
+  config:config,
   height: 420,
   
   title: {
-    text: "Daily Wage & Labour Hours by Brand & Country",
+   text: "Regional Wage Disparities in the Fast Fashion Industry",
+    subtitle: "Hourly wages for garment workers (USD) and Daily Hours Worked",
     anchor: "start",
     fontSize: 18,
     offset: 15
@@ -402,7 +456,7 @@ vegaEmbed("#vis-Wagemap", {
           "type": "quantitative",
           "title": "Hourly Wage ($)",
            scale: {
-                range: ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+                range: ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"]
             }
         },
         "tooltip": [
@@ -419,57 +473,101 @@ vegaEmbed("#vis-Wagemap", {
 
 vegaEmbed("#vis-HeatMap", {
   ...config,
+  config:config,
   "data": dataSource,
   "width": "container",
   "height": 420,
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "title": "Total Carbon Emissions by Brand and Country",
+  title: {
+      text: "Total Carbon Emissions by Brand and Country per year",
+      anchor: "start",
+      fontSize: 18,
+      offset: 15
+    },
 
-  "transform": [
-    {
-      "filter": "datum.Year == 2024"
+"params": [
+  {
+    "name": "brand_select",
+      "value": "All",
+      "bind": {
+        "input": "radio",
+        "options": ["All", "Shein", "Zara", "Uniqlo", "Forever 21", "H&M"],
+        "name": "Brand: "
+      }
     },
     {
-      "filter": "datum.Country !== 'USA' && datum.Country !== 'UK' && datum.Country !== 'Germany'"
-    },
-    {
-      "calculate": "datum.Country == 'Vietnam' ? 'Viet Nam' : datum.Country",
-      "as": "map_name"
+      "name": "country_select",
+      "value": "All",
+      "bind": {
+        "input": "radio",
+        "options": ["All", "China", "Vietnam", "Bangladesh", "India"],
+        "name": "Country: "
+      }
+  },
+  {
+      "name": "hover",
+      "select": {"type": "point", "on": "mouseover", "clear": "mouseout"}
     }
+],
+  "transform": [
+    { "filter": "datum.Year == 2024" },
+    { "filter": "datum.Country !== 'USA' && datum.Country !== 'UK' && datum.Country !== 'Germany'" },
+    { "calculate": "datum.Country == 'Vietnam' ? 'Viet Nam' : datum.Country", "as": "map_name" },
+    { "calculate": "datum.Carbon_Emissions_tCO2e / 4.6", "as": "Car_Years" }
   ],
   "mark": "rect",
   "encoding": {
-    "x": {
-      "field": "Country",
-      "type": "nominal",
-      "title": "Production Country"
+  "x": {
+    "field": "Country",
+    "type": "nominal",
+    "title": "Production Country",
+    "sort": {
+      "op": "sum",
+      "field": "Carbon_Emissions_tCO2e",
+      "order": "descending"
+    }
+  },
+  "y": {
+    "field": "Brand",
+    "type": "nominal",
+    "title": "Brand",
+    "sort": {
+      "op": "sum",
+      "field": "Carbon_Emissions_tCO2e",
+      "order": "descending"
+    }
+  },
+  "color": {
+    "aggregate": "sum",
+    "field": "Carbon_Emissions_tCO2e",
+    "type": "quantitative",
+    "scale": {
+      "range": ["#fde0dd", "#fa9fb5", "#c51b8a", "#7a0177"]
+      
+      
     },
-    "y": {
-      "field": "Brand",
-      "type": "nominal",
-      "title": "Brand"
+    "title": "Total Emissions (CO2)"
+  },
+  "opacity": {
+    "condition": {
+      "test": "(brand_select === 'All' || datum.Brand === brand_select) && (country_select === 'All' || datum.Country === country_select)",
+      "value": 1,
+      "empty": true
     },
-    "color": {
+    "value": 0.15
+  },
+  "tooltip": [
+    {"field": "Brand", "type": "nominal"},
+    {"field": "Country", "type": "nominal"},
+    {
+      "aggregate": "sum",
       "field": "Carbon_Emissions_tCO2e",
       "type": "quantitative",
-      "aggregate": "sum",
-     "scale": {
-            "range": ["#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
-          },
-      "title": "Total Emissions (CO2)"
-    },
-    "tooltip": [
-      {"field": "Brand", "type": "nominal"},
-      {"field": "Country", "type": "nominal"},
-      {
-        "field": "Carbon_Emissions_tCO2e", 
-        "type": "quantitative", 
-        "aggregate": "sum", 
-        "title": "Total Emissions",
-        "format": ",.0f"
-      }
-    ]
-  },
+      "title": "Total Emissions",
+      "format": ",.0f"
+    }
+  ]
+},
   "config": {
     "view": {"stroke": "transparent"},
     "axis": {"grid": false}
@@ -480,64 +578,121 @@ vegaEmbed("#vis-HeatMap", {
  
 // consumer spending vs labour risk scatterplot viz
 vegaEmbed('#vis-social-scatter', {
-  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
-  width: "container",
-  height: 420,
-  config: config,
-  title: {
-    text: "Consumer Spending vs Labour Risk by Brand",
-    anchor: "start",
-    fontSize: 18,
-    offset: 15
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": "container",
+  config:config,
+  "height": 420,
+  "title": {
+    text: "Do Consumers Shop More Frequently at Less Ethical Brands?",
+    subtitle: "Comparing ethical risk with how often customers purchase",
+    "anchor": "start",
+    "fontSize": 18,
+    "subtitleFontSize": 13,
+    "offset": 15
   },
-  data: dataSource,
-  transform: [
-    // labour risk score, taking into account hours, lower compliance score, more child labour incidents
-    {"calculate": "datum.Working_Hours_Per_Week * 0.4 + (100 - datum.Compliance_Score) * 0.15 + datum.Child_Labor_Incidents * 0.5", "as": "Labour_Risk_Score"},
-    // consumer avg annual spend per purchase times frequency
-    {"calculate": "datum.Avg_Spend_Per_Customer_USD * datum.Shopping_Frequency_Per_Year", "as": "Annual_Spend"},
-    // aggregate by brand 
+  "data": dataSource,
+  "transform": [
+    {
+      "calculate": "datum.Working_Hours_Per_Week * 0.4 + (100 - datum.Compliance_Score) * 0.15 + datum.Child_Labor_Incidents * 0.5",
+      "as": "Labour_Risk_Score"
+    },
     {
       "aggregate": [
         {"op": "mean", "field": "Labour_Risk_Score", "as": "avg_risk"},
-        {"op": "mean", "field": "Annual_Spend", "as": "avg_spend"}
+        {"op": "mean", "field": "Shopping_Frequency_Per_Year", "as": "avg_frequency"}
       ],
       "groupby": ["Brand"]
     }
   ],
-  layer: [
+  "layer": [
     {
-      "mark": {"type": "errorband", "extent": "stdev", "color": "#e0e0e0"},
-      "encoding": {
-        "x": {"field": "avg_risk", "type": "quantitative", "scale": {"zero": false}},
-        "y": {"field": "avg_spend", "type": "quantitative", "scale": {"zero": false}}
-      }
-    },
-    // trend lines
-    {
-      "mark": {"type": "line", "color": "black", "strokeWidth": 2},
+      "mark": {
+        "type": "line",
+        "color": "#999",
+        "strokeWidth": 1.5,
+        "strokeDash": [4, 4]
+      },
       "transform": [
-        {"regression": "avg_spend", "on": "avg_risk", "method": "linear"}
+        {
+          "regression": "avg_frequency",
+          "on": "avg_risk",
+          "method": "linear"
+        }
       ],
       "encoding": {
         "x": {"field": "avg_risk", "type": "quantitative"},
-        "y": {"field": "avg_spend", "type": "quantitative"}
+        "y": {"field": "avg_frequency", "type": "quantitative"}
       }
     },
-    // scatter points for each
+
     {
-      "mark": {"type": "circle", "size": 250, "opacity": 1},
+      "transform": [
+        {
+          "joinaggregate": [
+            {"op": "mean", "field": "avg_risk", "as": "mean_x"},
+            {"op": "mean", "field": "avg_frequency", "as": "mean_y"}
+          ]
+        },
+        {
+          "calculate": "(datum.avg_risk - datum.mean_x) * (datum.avg_frequency - datum.mean_y)",
+          "as": "num"
+        },
+        {
+          "calculate": "pow(datum.avg_risk - datum.mean_x, 2)",
+          "as": "den_x"
+        },
+        {
+          "joinaggregate": [
+            {"op": "sum", "field": "num", "as": "sum_num"},
+            {"op": "sum", "field": "den_x", "as": "sum_den_x"}
+          ]
+        },
+        {
+          "calculate": "datum.sum_num / datum.sum_den_x",
+          "as": "slope"
+        },
+        {
+          "aggregate": [
+            {"op": "mean", "field": "slope", "as": "slope_value"}
+          ]
+        },
+        {
+          "calculate": "'Slope: ' + format(datum.slope_value, '.3f')",
+          "as": "label"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "fontSize": 0,
+        "fontWeight": "bold",
+        "color": "#444"
+      },
+      "encoding": {
+        "x": {"value": 10},
+        "y": {"value": 10},
+        "text": {"field": "label"}
+      }
+    },
+    {
+      "mark": {
+        "type": "circle",
+        "size": 260,
+        "opacity": 1,
+        "stroke": "white",
+        "strokeWidth": 2
+      },
       "encoding": {
         "x": {
           "field": "avg_risk",
           "type": "quantitative",
-          "title": "Average Labour Risk Score",
+          "title": "Ethical Risk Score (Higher = Worse)",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "avg_spend",
+          "field": "avg_frequency",
           "type": "quantitative",
-          "title": "Consumer Buying (Avg Annual Spend)",
+          "title": "Shopping Frequency (Purchases per Year)",
           "scale": {"zero": false}
         },
         "color": {
@@ -545,23 +700,29 @@ vegaEmbed('#vis-social-scatter', {
           "type": "nominal",
           "scale": {
             "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
-"range": ["#ffd6ea", "#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+            "range": ["#f062a6"]
           },
           "legend": null
         },
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
-          {"field": "avg_risk", "type": "quantitative", "title": "Labour Risk Score", "format": ".1f"},
-          {"field": "avg_spend", "type": "quantitative", "title": "Avg Annual Spend", "format": "$,.0f"}
+          {"field": "avg_risk", "type": "quantitative", "title": "Ethical Risk Score", "format": ".1f"},
+          {"field": "avg_frequency", "type": "quantitative", "title": "Purchases per Year", "format": ".1f"}
         ]
       }
     },
-    // brand name labels
+
     {
-      "mark": {"type": "text", "dy": -18, "fontSize": 13, "fontWeight": "bold", "color": "#333"},
+      "mark": {
+        "type": "text",
+        "dy": -16,
+        "fontSize": 12,
+        "fontWeight": "bold",
+        "color": "#333"
+      },
       "encoding": {
         "x": {"field": "avg_risk", "type": "quantitative"},
-        "y": {"field": "avg_spend", "type": "quantitative"},
+        "y": {"field": "avg_frequency", "type": "quantitative"},
         "text": {"field": "Brand", "type": "nominal"}
       }
     }
