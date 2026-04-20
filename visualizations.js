@@ -126,6 +126,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
 // Chart 2: Global production
 vegaEmbed('#vis-production', {
   ...config,
+  config:config,
   "data": dataSource,
   "width": "container", "height": 300,
   "mark": {"type": "bar", "color": "#222", "size": 30},
@@ -152,6 +153,7 @@ vegaEmbed('#vis-production', {
 // Chart 3: Global water ussage
 vegaEmbed('#vis-water', {
   ...config,
+  config:config,
   "data": dataSource,
   "width": "container",
   "height": 420,
@@ -252,6 +254,7 @@ vegaEmbed('#vis-water', {
 
 vegaEmbed('#vis-wage', {
   ...config,
+  config: config,
   "data": dataSource,
   "transform": [
     {"calculate": "datum.Avg_Worker_Wage_USD / 26", "as": "DailyWage"},
@@ -304,7 +307,8 @@ vegaEmbed('#vis-wage', {
 });
 
 vegaEmbed('#vis-bars', {
-  ...config,
+ 
+  config: config,
   
   "data": dataSource,
   title: {
@@ -736,104 +740,197 @@ vegaEmbed('#vis-ethics-sentiment', {
   width: "container",
   height: 420,
   config: config,
+
   title: {
-    text: "Public Sentiment vs Ethical Rating by Brand",
+    text: "Consumers Favor Some Low-Ethics Brands",
+    subtitle: "How low ethical ratings do not always lead to negative public sentiment",
     anchor: "start",
     fontSize: 18,
+    subtitleFontSize: 13,
     offset: 15
   },
+
   data: dataSource,
+
   transform: [
     {
-      "aggregate": [
-        { "op": "mean", "field": "Ethical_Rating", "as": "avg_ethics" },
-        { "op": "mean", "field": "Sentiment_Score", "as": "avg_sentiment" }
+      aggregate: [
+        { op: "mean", field: "Ethical_Rating", as: "avg_ethics" },
+        { op: "mean", field: "Sentiment_Score", as: "avg_sentiment" }
       ],
-      "groupby": ["Brand"]
+      groupby: ["Brand"]
+    },
+    {
+      joinaggregate: [
+        { op: "mean", field: "avg_ethics", as: "mean_ethics" },
+        { op: "mean", field: "avg_sentiment", as: "mean_sentiment" }
+      ]
+    },
+    {
+      calculate: `
+        datum.avg_ethics < datum.mean_ethics && datum.avg_sentiment > 0
+        ? 'Low Ethics, High Sentiment'
+        : datum.avg_ethics < datum.mean_ethics && datum.avg_sentiment <= 0
+        ? 'Low Ethics, Low Sentiment'
+        : datum.avg_ethics >= datum.mean_ethics && datum.avg_sentiment > 0
+        ? 'High Ethics, High Sentiment'
+        : 'High Ethics, Low Sentiment'
+      `,
+      as: "quadrant"
+    },
+    {
+      calculate: "datum.quadrant === 'Low Ethics, High Sentiment'",
+      as: "highlight"
     }
   ],
+
   layer: [
+
+
     {
-      "transform": [
-        { "regression": "avg_sentiment", "on": "avg_ethics", "method": "linear" }
-      ],
-      "mark": {
-        "type": "line",
-        "color": "black",
-        "strokeWidth": 2
-      },
-      "encoding": {
-        "x": {
-          "field": "avg_ethics",
-          "type": "quantitative",
-          "scale": { "zero": false }
-        },
-        "y": {
-          "field": "avg_sentiment",
-          "type": "quantitative",
-          "scale": { "zero": false }
-        }
+      mark: { type: "rule", strokeDash: [4,4], color: "#bbb" },
+      encoding: {
+        x: { field: "mean_ethics", type: "quantitative" }
       }
     },
     {
-      "mark": {
-        "type": "circle",
-        "size": 250,
-        "stroke": "white",
-        "strokeWidth": 1.5
+      mark: {
+        type: "text",
+        dy: -190,
+        dx: 70,
+        fontSize: 11,
+        color: "#666",
+        baseline: "bottom"
       },
-      "encoding": {
-        "x": {
-          "field": "avg_ethics",
-          "type": "quantitative",
-          "title": "Average Ethical Rating →",
-          "scale": { "zero": false }
+      encoding: {
+        x: { field: "mean_ethics", type: "quantitative" },
+        text: { value: "Average Ethics Rating" }
+      }
+    },
+
+    {
+      mark: { type: "rule", strokeDash: [4,4], color: "#bbb" },
+      encoding: {
+        y: { field: "mean_sentiment", type: "quantitative" }
+      }
+    },
+
+    {
+      mark: {
+        type: "text",
+        dx: 20,
+        dy: -10,
+        fontSize: 11,
+        color: "#666"
+      },
+      encoding: {
+        y: { field: "mean_sentiment", type: "quantitative" },
+        x: { aggregate: "min", field: "avg_ethics" },
+        text: { value: "Average Public Sentiment" }
+      }
+    },
+
+
+    {
+      mark: {
+        type: "circle",
+        size: 260,
+        stroke: "white",
+        strokeWidth: 2
+      },
+      encoding: {
+        x: {
+          field: "avg_ethics",
+          type: "quantitative",
+          title: "Ethical Rating (Higher = Better)",
+          scale: { zero: false }
         },
-        "y": {
-          "field": "avg_sentiment",
-          "type": "quantitative",
-          "title": "↑ Average Public Sentiment Score",
-          "scale": { "zero": false }
+        y: {
+          field: "avg_sentiment",
+          type: "quantitative",
+          title: "Public Sentiment Score (Higher = Better)",
+          scale: { zero: false, padding: 20 }
         },
-        "color": {
-          "field": "Brand",
-          "type": "nominal",
-          "scale": {
-            "domain": ["Shein", "Forever 21", "Uniqlo", "H&M", "Zara"],
-"range": ["#ffd6ea", "#fbb1d8", "#f062a6", "#c73789", "#7a1e4d"]
+        color: {
+          condition: {
+            test: "datum.highlight",
+            value: "#f062a6"
           },
-          "legend": null
+          value: "#bdbdbd"
         },
-        "tooltip": [
-          { "field": "Brand", "type": "nominal" },
-          {
-            "field": "avg_ethics",
-            "type": "quantitative",
-            "title": "Avg Ethical Rating",
-            "format": ".3f"
-          },
-          {
-            "field": "avg_sentiment",
-            "type": "quantitative",
-            "title": "Avg Public Sentiment Score",
-            "format": ".3f"
-          }
+        opacity: {
+          condition: { test: "datum.highlight", value: 1 },
+          value: 0.6
+        },
+        tooltip: [
+          { field: "Brand", type: "nominal" },
+          { field: "avg_ethics", type: "quantitative", format: ".2f", title: "Ethical Rating" },
+          { field: "avg_sentiment", type: "quantitative", format: ".2f", title: "Public Sentiment" },
+          { field: "quadrant", type: "nominal", title:"Classification" }
         ]
       }
     },
+
+
     {
-      "mark": {
-        "type": "text",
-        "dy": -18,
-        "fontSize": 13,
-        "fontWeight": "bold",
-        "color": "#333"
+      mark: {
+        type: "text",
+        fontSize: 12,
+        fontWeight: "bold",
+        dy:-15
       },
-      "encoding": {
-        "x": { "field": "avg_ethics", "type": "quantitative" },
-        "y": { "field": "avg_sentiment", "type": "quantitative" },
-        "text": { "field": "Brand", "type": "nominal" }
+      encoding: {
+        x: { field: "avg_ethics", type: "quantitative" },
+        y: { field: "avg_sentiment", type: "quantitative" },
+        text: { field: "Brand" },
+
+        dx: {
+          condition: {
+            test: "datum.highlight",
+            value: 8
+          },
+          value: 0
+        },
+        dy: {
+          condition: {
+            test: "datum.highlight",
+            value: -8
+          },
+          value: -14
+        },
+        align: {
+          condition: { test: "datum.highlight", value: "left" },
+          value: "center"
+        },
+
+        color: {
+          condition: {
+            test: "datum.highlight",
+            value: "#f062a6"
+          },
+          value: "#333",
+        }
+      }
+    },
+
+    {
+      transform: [
+        { filter: "datum.highlight" }
+      ],
+      mark: {
+        type: "text",
+        dx: 100,
+        fontSize: 10,
+        color: "#f062a6"
+      },
+      encoding: {
+        x: { field: "avg_ethics", type: "quantitative" },
+        y: { field: "avg_sentiment", type: "quantitative" },
+        text: { value: "High sentiment despite low ethics" }
+        
       }
     }
+
   ]
+
 }, { actions: false });
