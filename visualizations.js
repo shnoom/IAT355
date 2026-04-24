@@ -413,7 +413,8 @@ vegaEmbed('#vis-bars', {
             "domain": ["Avg_Daily_Wage", "Avg_Item_Price"],
             "range": ["#64b5f6", "#f062a6"]
           },
-          "legend": {"title": ""}
+          "legend": {"title": ""},
+          "orient": "right",
         },
         "tooltip": [
           {"field": "Brand", "type": "nominal"},
