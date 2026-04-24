@@ -134,7 +134,7 @@ body {
 }
 
 .nav-links a.active {
-  color: var(--accent-darkPink);
+  color: var(--bg-color);
 }
 
 /* Burger Menu (hidden on desktop) */
@@ -255,7 +255,7 @@ h2 {
   max-width: 900px;
   margin: 40px auto;
   display: flex;
-  justify-content: center;
+ 
   background: white;
   padding: 1.5rem 1rem;
   flex-direction: column;
@@ -412,7 +412,7 @@ section {
 
 }
 
-.intro-wrapper{
+.intro-wrapper, .ending-wrapper{
   display: flex;
   flex-direction: row; 
   align-items: center;
@@ -421,7 +421,15 @@ max-width: 1050px;
   width: 100%;
   gap: 2.5rem;
 }
-
+.ending-wrapper{
+  max-width: 100%;
+ 
+}
+.endingImage
+{
+ width: 50%;
+ border-radius: 2rem;
+}
 .image-side {
   flex: 1 1 80%; 
   display: flex;
@@ -441,6 +449,7 @@ max-width: 1050px;
       opacity: 0;
       transition: opacity 0.15s ease;
       min-width: 160px;
+      z-index: 100 !important;
     }
 
     .vega-tooltip .title {
@@ -484,6 +493,66 @@ section{
   margin: 4rem 2rem;
 }
 
+/* cursor styling */
+
+.cursor-dot, 
+.cursor-outline {
+    position: fixed;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 9999;
+    pointer-events: none; 
+}
+
+.cursor-dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    background-color: var(--accent-pink);
+}
+
+.cursor-outline {
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 0.1rem solid var(--accent-pink);
+    transition: transform 0.15s ease-out, opacity 0.2s ease-in-out;
+}
+
+.factHeader{
+  font-family: "Poppins";
+  font-weight: 800;
+  font-style: normal;
+  font-size: 2.5rem;
+  text-align: center;
+  margin: 0;
+  color: var(--accent-darkPink);
+}
+
+.factBox{
+  border: 2px solid var(--accent-pink);
+  padding: 1rem;
+}
+
+.fact{
+  text-align: center;
+  font-style: italic;
+  color: var(--muted);
+}
+
+.chart-grid{
+  display: flex;
+  flex-direction: row;
+ gap: 2rem;
+  justify-content: space-between;
+ 
+  align-items: stretch;
+}
+
+
+
+
+
 @media (max-width: 960px) {
   section {
     margin: 4rem 1rem;
@@ -497,6 +566,10 @@ section{
   .line {
     font-size: 2.5rem;
   }
+  .chart-grid {
+    flex-direction: column;
+  }
+
 }
 
  img{
@@ -509,6 +582,7 @@ section{
 
 /* Mobile Nav - burger*/
 @media (max-width: 768px) {
+  
   .nav-bar {
     position: sticky;
     top: 1rem;
@@ -554,4 +628,6 @@ section{
   .nav-links.active {
     display: flex;
   }
+
+
 }

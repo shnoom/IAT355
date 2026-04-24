@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>The True Cost of Fast Fashion</title>
   <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
   <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -24,6 +25,7 @@
       <li><a href="#human_cost">Human Cost</a></li>
       <li><a href="#environmental_cost">Environmental Cost</a></li>
       <li><a href="#social_impact">Social Impact</a></li>
+    
     </ul>
    </nav>
 
@@ -90,9 +92,21 @@
               This map reveals where our featured brands manufacture across the globe. A strong cluster appears across Asia, where brands 
               rely on established manufacturing networks, <a class="text-link" href="https://www.earthday.org/beneath-the-seams-the-human-toll-of-fast-fashion/" target="_blank">lower labour costs</a>, and weaker worker protections to produce clothing at scale.</p>
           </div>
+         
           <div class="chart-wrapper">
             <div id="vis-map"></div>
           </div>
+          <div class = "chart-wrapper">
+              <div id="vis-donut"></div>
+            </div>
+            <div class="textBox">
+            <div class="factBox">
+             <p class="factHeader">71%</p>
+                    <p class="fact">of factories are located in Asia (1,477 out of 2070 total factories)</p>
+             
+        </div>
+        </div>
+        </div>
         </div>
       </section>
    </section>
@@ -131,8 +145,10 @@
             <div id="vis-bars"></div>
           </div>
           <div class="textBox">
-            <p>This comparison shows the disparity between how much brands charge for their clothing compared to how much they pay their workers. For <span class="highlight"> a worker from any one of the 5 brands</span> to buy one $20 item, they would need to work for almost <span class="highlight">4 days</span>, spending nothing else.</p>
-          </div>
+            <div class="factBox">
+            <p class="factHeader">3 FULL DAYS OF WORK NEEDED</p>
+                    <p class="fact">For a worker to afford 1 piece of clothing from one of these brands, on average</p>
+        </div>
         </section>
         <section class="scroll-step">
           <div class="story-block reveal">
@@ -144,6 +160,7 @@
             <div class="chart-wrapper">
               <div id="vis-Wagemap"></div>
             </div>
+            
           </div>
         </section>
       </section>
@@ -259,9 +276,35 @@ Despite Shein being criticized for issues like labor practices or environmental 
     </section>
     </section>
 
+    <!-- closing remarks -->
+    <section id="closing-remarks">
+      <section class="scroll-step">
+        <div class ="introBox reveal">
+          <h1 class="zoom-text">WHAT DOES ALL OF THIS TELL US ABOUT THE STATE OF FAST FASHION?</h1>
+        </div>
+      </section>
+
+       <section class="scroll-step">
+    <div class="ending-wrapper">
+        
+          <img src = "assets/img/ending image.jpeg" alt="White T-shirt" class="endingImage">
+         
+  <div class="copy-container">
+    <h2> That white t-shirt isn't just $20</h2>
+    <p>It’s labour, water, safety and time. But it's also a <span class="highlight">choice</span>.</p>
+
+<p>This is the double-edged sword of fast fashion. As the cost of living rises, many consumers feel priced out of more sustainable options and are pushed toward cheaper brands,trading ethics and durability for affordability and access.</p>
+  <p>Because behind every steal,
+there is always <span class="highlight">a price</span> someone else is paying.</p>
+</div>
+
+    </section>
+
+
     <!-- Scripts -->
     <script src="visualizations.js"></script>
     <script src="main.js"></script>
+
 
   </body>
 </html>

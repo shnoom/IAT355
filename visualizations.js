@@ -69,14 +69,13 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
     "Turkey",
     "Brazil"
   ];
+  
   const counts = {};
 
+  // Process the data
   data.forEach(d => {
-    const year = +d.Year;
     const country = d.Country;
-
-    // you can control years here
-    if (/*year >= 2022 && year <= 2024 && */focusCountries.includes(country)) {
+    if (focusCountries.includes(country)) {
       counts[country] = (counts[country] || 0) + 1;
     }
   });
@@ -86,25 +85,23 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
     factoryCount
   }));
 
+  // --- MAP VISUALIZATION ---
   vegaEmbed("#vis-map", {
     $schema: "https://vega.github.io/schema/vega-lite/v5.json",
     width: "container",
-    height: 420,
+    height: 400,
+      config:config,
     title: {
       text: "Global Fast Fashion Factory Hubs",
       anchor: "start",
       fontSize: 18,
       offset: 15
     },
-    config: config,
     layer: [
       {
         data: {
           url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-          format: {
-            type: "topojson",
-            feature: "countries"
-          }
+          format: { type: "topojson", feature: "countries" }
         },
         projection: { type: "equalEarth" },
         mark: {
@@ -117,10 +114,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
       {
         data: {
           url: "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
-          format: {
-            type: "topojson",
-            feature: "countries"
-          }
+          format: { type: "topojson", feature: "countries" }
         },
         projection: { type: "equalEarth" },
         transform: [
@@ -132,9 +126,7 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
               fields: ["factoryCount"]
             }
           },
-          {
-            filter: "datum.factoryCount != null"
-          }
+          { filter: "datum.factoryCount != null" }
         ],
         mark: {
           type: "geoshape",
@@ -147,22 +139,89 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
             type: "quantitative",
             title: "Factory Count",
             scale: {
-                range: ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"],
-                domain: [270, 310]
+              range: ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"],
+              domain: [270, 310]
             }
           },
           tooltip: [
             { field: "properties.name", type: "nominal", title: "Country" },
-            { field: "factoryCount", type: "quantitative", title: "Factories" },
-            
+            { field: "factoryCount", type: "quantitative", title: "Factories" }
           ]
         }
       }
     ]
-  }, { actions: false,
-  tooltip: customTooltipHandler });
-});
+  }, { actions: false ,  tooltip: customTooltipHandler});
 
+  // --- donut ---
+  vegaEmbed("#vis-donut", {
+    $schema: "https://vega.github.io/schema/vega-lite/v5.json",
+    width: "container",
+    config:config,
+    height: 400,
+    title: {
+      text: "Factory Distribution by Country",
+      anchor: "start",
+      fontSize: 18,
+      offset: 15
+    },
+    data: {
+      values: factoryCounts
+    },
+    params: [
+    {
+      name: "Select_Country",
+      select: { type: "point", fields: ["Country"] },
+      bind: {
+        input: "radio",
+        options: [null, "India", "Bangladesh", "Vietnam", "Indonesia", "China", "Turkey", "Brazil"],
+        labels: ["Show All", "India", "Bangladesh", "Vietnam", "Indonesia", "China", "Turkey", "Brazil"],name: "Region:"
+      }
+    }
+  ],
+    mark: {
+      type: "arc",
+      innerRadius: 90,
+      outerRadius: 160,
+      padAngle: 0.02,
+      cornerRadius:4,
+    },
+    encoding: {
+      theta: {
+        field: "factoryCount",
+        type: "quantitative"
+      },
+      color: {
+        field: "Country",
+        type: "nominal",
+      
+        scale: {
+      // Flowing from Pastel Pink -> Lavender -> Soft Blue
+    range: [
+        "#FF71CE",
+            "#94e9eb", 
+            "#05FFA1", 
+            "#dfabf7", 
+            "#FFFB96", 
+            "#700B97", 
+            "#2D5FF5"
+        ]
+     
+    }
+      },
+      opacity:{
+        condition: { param: "Select_Country", value: 1 },
+      value: 0.15
+      },
+      tooltip: [
+        { field: "Country", type: "nominal" },
+        { field: "factoryCount", type: "quantitative", title: "Factories" }
+      ]
+    }
+  }, { actions: false,  tooltip: customTooltipHandler });
+
+}).catch(err => {
+  console.error("Error loading or processing data: ", err);
+});
 
 // Chart 3: Global water ussage
 vegaEmbed('#vis-water', {
@@ -209,7 +268,7 @@ vegaEmbed('#vis-water', {
   "layer": [
     {
       "mark": {
-        "type": "bar",
+        "type": "bar", "cornerRadiusTopLeft": 10, "cornerRadiusTopRight": 10,
       },
       "encoding": {
         "x": {
@@ -228,7 +287,7 @@ vegaEmbed('#vis-water', {
           "type": "nominal",
           "scale": {
             "domain": ["highlight", "normal"],
-            "range": ["#7a1e4d", "#fbb1d8"]
+            "range": [ "#fbb1d8"]
           },
           "legend": null
         },
