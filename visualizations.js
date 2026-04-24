@@ -1,3 +1,42 @@
+// tooltip
+function customTooltipHandler(handler, event, item, value) {
+  let tooltip = document.querySelector('.vega-tooltip');
+
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.className = 'vega-tooltip';
+    document.body.appendChild(tooltip);
+  }
+
+  if (value) {
+    let html = "";
+
+    // Title (first key)
+    const titleKey = Object.keys(value)[0];
+    if (titleKey) {
+      html += `<div class="title">${value[titleKey]}</div>`;
+    }
+
+    Object.entries(value).forEach(([key, val]) => {
+      if (key === titleKey || val == null) return;
+
+      html += `
+        <div class="row">
+          <span class="label">${key.replace(/_/g, ' ')}</span>
+          <span class="value">${val}</span>
+        </div>
+      `;
+    });
+
+    tooltip.innerHTML = html;
+    tooltip.style.opacity = 1;
+    tooltip.style.left = event.pageX + 15 + 'px';
+    tooltip.style.top = event.pageY + 15 + 'px';
+  } else {
+    tooltip.style.opacity = 0;
+  }
+}
+
 const config = {
   "view": {"stroke": "transparent"},
   "font": "Work Sans",
@@ -120,39 +159,14 @@ d3.csv("true_cost_fast_fashion.csv").then(data => {
         }
       }
     ]
-  }, { actions: false });
+  }, { actions: false,
+  tooltip: customTooltipHandler });
 });
 
-// Chart 2: Global production
-vegaEmbed('#vis-production', {
-  ...config,
-  config:config,
-  "data": dataSource,
-  "width": "container", "height": 300,
-  "mark": {"type": "bar", "color": "#222", "size": 30},
-  "encoding": {
-    "x": {
-      "field": "Brand", 
-      "type": "nominal", 
-      "sort": "-y", 
-      "axis": {"labelAngle": 0, "title": "Brand"}
-    },
-    "y": {
-      "aggregate": "sum", 
-      "field": "Monthly_Production_Tonnes", 
-      "type": "quantitative", 
-      "title": "Total Production (Tonnes)"
-    },
-    "tooltip": [
-      {"field": "Brand", "type": "nominal"},
-      {"aggregate": "sum", "field": "Monthly_Production_Tonnes", "type": "quantitative", "title": "Total Tonnes", "format": ",.0f"}
-    ]
-  }
-});
 
 // Chart 3: Global water ussage
 vegaEmbed('#vis-water', {
-  ...config,
+   $schema: "https://vega.github.io/schema/vega-lite/v5.json",
   config:config,
   "data": dataSource,
   "width": "container",
@@ -248,132 +262,133 @@ vegaEmbed('#vis-water', {
       }
     }
   ]
-}, { "actions": false });
-// Chart 4: Cleveland dot plot for wage vs, price
-//ERROR i relaize in this visualization it like takes sum od all the locations for each retailer, so it skews it as factories in like develoopping countries have work weeks of like 40 vs more devellopping countries closer to 60+, were going to have to change and or do a second graph comparing GEOGRPAHICAL location ratehr than from rband but imm leave this for now for this submission
+}, { actions: false,
+  tooltip: customTooltipHandler  });
 
-vegaEmbed('#vis-wage', {
-  ...config,
-  config: config,
-  "data": dataSource,
-  "transform": [
-    {"calculate": "datum.Avg_Worker_Wage_USD / 26", "as": "DailyWage"},
-    {"calculate": "datum.Working_Hours_Per_Week / 5", "as": "DailyHours"}
-  ],
-  "width": "container", "height": 300,
-  "layer": [
-    // The connector line
-    {
-      "mark": {"type": "rule", "color": "#ccc"},
-      "encoding": {
-        "x": {"field": "Brand", "type": "nominal", "axis": {"labelAngle": 0}},
-        "y": {"aggregate": "mean", "field": "DailyWage", "type": "quantitative"},
-        "y2": {"aggregate": "mean", "field": "Avg_Item_Price_USD"}
-      }
-    },
-    // The Price
-    {
-      "mark": {"type": "point", "size": 100, "filled": true, "color": "#e63946"},
-      "encoding": {
-        "x": {"field": "Brand", "type": "nominal"},
-        "y": {"aggregate": "mean", "field": "Avg_Item_Price_USD", "type": "quantitative", "title": "USD ($)"},
-        "tooltip": [
-          {"field": "Brand", "type": "nominal"},
-          {"aggregate": "mean", "field": "Avg_Item_Price_USD", "type": "quantitative", "title": "Avg Item Price", "format": "$.2f"}
-        ]
-      }
-    },
-
-    {
-      "mark": {"type": "point", "filled": true, "color": "#222"},
-      "encoding": {
-        "x": {"field": "Brand", "type": "nominal"},
-        "y": {"aggregate": "mean", "field": "DailyWage", "type": "quantitative"},
-        "size": {
-          "aggregate": "mean", 
-          "field": "DailyHours", 
-          "type": "quantitative",
-          "scale": {"range": [50, 700]}, 
-          "legend": {"title": "Avg Daily Hours", "orient": "bottom"}
-        },
-        "tooltip": [
-          {"field": "Brand", "type": "nominal"},
-          {"aggregate": "mean", "field": "DailyWage", "type": "quantitative", "title": "Avg Daily Wage", "format": "$.2f"},
-          {"aggregate": "mean", "field": "DailyHours", "type": "quantitative", "title": "Avg Hours Worked/Day", "format": ".1f"}
-        ]
-      }
-    }
-  ]
-});
 
 vegaEmbed('#vis-bars', {
- 
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
   config: config,
-  
-  "data": dataSource,
+  data: dataSource,
+ 
+  width: "container",
+  height: 420,
+
   title: {
-      text: "Average Item Price vs Daily Wage for Workers by Brand",
-      subtitle: "How many days a worker must labor to afford a single item from the brand",
-      anchor: "start",
-      fontSize: 18,
-      offset: 15
-    },
-  "width": "container",
-  "height": 420,
-  "transform": [
-    // divide by 23 (average working days) since it onyl gives a monthly wage
+    text: "Daily Wage vs Item Price by Brand",
+    subtitle: "Gap shows how many days a worker must labor to afford one item",
+    anchor: "start",
+    fontSize: 18,
+    offset: 15
+  },
+
+
+  transform: [
     {"calculate": "datum.Avg_Worker_Wage_USD / 23", "as": "Daily_Wage"},
-    
-  
+
     {
       "aggregate": [
-        {"op": "mean", "field": "Avg_Item_Price_USD", "as": "Avg Item Price ($)"},
-        {"op": "mean", "field": "Daily_Wage", "as": "Avg Daily Wage ($)"}
+        {"op": "mean", "field": "Avg_Item_Price_USD", "as": "Avg_Item_Price"},
+        {"op": "mean", "field": "Daily_Wage", "as": "Avg_Daily_Wage"}
       ],
       "groupby": ["Brand"]
     },
-    {"calculate": "datum['Avg Item Price ($)'] / datum['Avg Daily Wage ($)']", "as": "Work_Ratio"},
-    
+
     {
-      "fold": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
+      "calculate": "datum.Avg_Item_Price / datum.Avg_Daily_Wage",
+      "as": "Work_Ratio"
+    },
+
+    {
+      "calculate": "format(datum.Work_Ratio, '.1f') + ' days needed'",
+      "as": "Ratio_Label"
+    },
+
+    {
+      "fold": ["Avg_Item_Price", "Avg_Daily_Wage"],
       "as": ["Metric", "Value"]
     }
   ],
-  
-  "mark": "bar",
-  "encoding": {
-    "x": {
-      "field": "Brand", 
-      "type": "nominal", 
-      "axis": {"labelAngle": 0},
-      "title": "Brand"
-    },
-    "y": {
-      "field": "Value", 
-      "type": "quantitative", 
-      "title": "Value (USD)"
-    },
-    "xOffset": {
-      "field": "Metric", 
-      "type": "nominal"
-    },
-    "color": {
-      "field": "Metric", 
-      "type": "nominal",
-      "scale": {
-        "domain": ["Avg Item Price ($)", "Avg Daily Wage ($)"],
-        "range": ["#fbb1d8", "#f062a6", "#c73789", "#0d47a1"]
 
-      },
-      "legend": {"title": "Metric"}
+  layer: [
+
+  
+    {
+      "mark": {"type": "rule", "strokeWidth": 2, "color": "#ccc"},
+      "encoding": {
+        "y": {
+          "field": "Brand",
+          "type": "nominal",
+          "sort": {"field": "Work_Ratio", "order": "descending"}
+        },
+        "x": {
+          "aggregate": "min",
+          "field": "Value",
+          "type": "quantitative"
+        },
+        "x2": {
+          "aggregate": "max",
+          "field": "Value"
+        }
+      }
     },
-    "tooltip": [
-      {"field": "Brand", "type": "nominal", title: "Brand"},
-      {"field": "Metric", "type": "nominal"},
-      {"field": "Value", "type": "quantitative","title": "Value", "format": "$.2f"}
-    ]
-  }
-});
+
+
+    {
+      "mark": {"type": "point", "filled": true, "size": 80},
+      "encoding": {
+        "y": {
+          "field": "Brand",
+          "type": "nominal",
+          "sort": {"field": "Work_Ratio", "order": "descending"}
+        },
+        "x": {
+          "field": "Value",
+          "type": "quantitative",
+          "title": "USD Value"
+        },
+        "color": {
+          "field": "Metric",
+          "type": "nominal",
+          "scale": {
+            "domain": ["Avg_Daily_Wage", "Avg_Item_Price"],
+            "range": ["#64b5f6", "#f062a6"]
+          },
+          "legend": {"title": ""}
+        },
+        "tooltip": [
+          {"field": "Brand", "type": "nominal"},
+          {"field": "Avg_Daily_Wage", "type": "quantitative", "title": "Daily Wage", "format": "$.2f"},
+          {"field": "Avg_Item_Price", "type": "quantitative", "title": "Item Price", "format": "$.2f"},
+          {"field": "Work_Ratio", "type": "quantitative", "title": "Days Needed", "format": ".1f"}
+        ]
+      }
+    },
+
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "dx": 6,
+        "fontWeight": "bold"
+      },
+      "encoding": {
+        "y": {
+          "field": "Brand",
+          "type": "nominal",
+          "sort": {"field": "Work_Ratio", "order": "descending"}
+        },
+        "x": {
+          "aggregate": "max",
+          "field": "Value"
+        },
+        "text": {"field": "Ratio_Label"}
+      }
+    }
+
+  ]
+}, {  actions: false,
+  tooltip: customTooltipHandler });
 
 vegaEmbed("#vis-Wagemap", {
   $schema: "https://vega.github.io/schema/vega-lite/v5.json",
@@ -472,16 +487,16 @@ vegaEmbed("#vis-Wagemap", {
       }
     }
   ]
-}, { actions: false });
+}, { actions: false,
+  tooltip: customTooltipHandler  });
 
 
 vegaEmbed("#vis-HeatMap", {
-  ...config,
+  $schema: "https://vega.github.io/schema/vega-lite/v5.json",
   config:config,
   "data": dataSource,
   "width": "container",
   "height": 420,
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   title: {
       text: "Total Carbon Emissions by Brand and Country per year",
       anchor: "start",
@@ -577,7 +592,8 @@ vegaEmbed("#vis-HeatMap", {
     "axis": {"grid": false}
   }
 }, {
-  "actions": false
+  actions: false,
+  tooltip: customTooltipHandler 
 });
  
 // consumer spending vs labour risk scatterplot viz
@@ -731,7 +747,8 @@ vegaEmbed('#vis-social-scatter', {
       }
     }
   ]
-}, { actions: false });
+}, { actions: false,
+  tooltip: customTooltipHandler });
 
 // public sentiment vs ethical rating scatterplot
 
@@ -933,4 +950,5 @@ vegaEmbed('#vis-ethics-sentiment', {
 
   ]
 
-}, { actions: false });
+}, { actions: false,
+  tooltip: customTooltipHandler });

@@ -48,13 +48,13 @@
 
 /* Testing scroll effects */
 .scroll-step {
-  min-height: 160vh;
+  min-height: 40vh;
   position: relative;
 }
-.scroll-step .textBox,
+.scroll-step .textBox,.textBox2
 .scroll-step .introBox {
   position: sticky;
-  top: 18vh;
+  top: 15vh;
 }
 .story-block {
   position: sticky;
@@ -208,11 +208,14 @@ position: relative;
   padding: 0.3rem 1rem;
 }
 
-.textBox {
-  max-width: 700px;
+.textBox, .textBox2 {
+  max-width: 1000px;
   margin: 0rem auto;
   margin-bottom: 0;
-  padding: 0 4rem;
+  padding: 0 2rem;
+}
+.textBox2{
+  text-align: center;
 }
 h1 {
   font-family: "Poppins";
@@ -425,6 +428,43 @@ max-width: 1050px;
   justify-content: center;
 }
 
+.vega-tooltip {
+      position: absolute;
+      background: var(--bg-color);
+      color: #fff;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      font-size: 0.75rem;
+      line-height: 1.4;
+      pointer-events: none;
+      box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      min-width: 160px;
+    }
+
+    .vega-tooltip .title {
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 6px;
+      color: var(--text-color);
+    }
+
+    .vega-tooltip .row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 2px;
+    }
+
+    .vega-tooltip .label {
+      color: var(--muted);
+    }
+
+    .vega-tooltip .value {
+      color: var(--accent-darkPink);
+      margin-left: 1rem;
+    }
+
 
 /* highlights for keywords */
 .keyword.meow::before { background: var(--accent-pink); }
@@ -448,7 +488,7 @@ section{
   section {
     margin: 4rem 1rem;
   }
-  .textBox {
+  .textBox, .textBox2 {
     padding: 0 1.5rem;
   }
   h1 {
